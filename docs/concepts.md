@@ -15,13 +15,15 @@ module.exports = {
 
 - output
 
-指定 webpack 构建的 bundle 存放目录以及名称.
+指定 webpack 构建的 bundle 存放目录以及名称. 它接收 path 和 filename 两个属性, 现代玩法都是给 filename 增加哈希, 以避免浏览器缓存导致加载旧代码; 同时它与 splitChunks 结合, 用于分离三方库, 充分利用浏览器缓存. emmmmmmm
+
+可用的哈希有三种, 分别是 `hash`, `thunkhash` 和 `contenthash`, 关于这三种方式的异同可参考 [浅谈 hash, thunkhash 和 contenthash](./hash.md)
 
 ```js
 module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'my-first-webpack.bundle.js',
+    filename: '[name].[chunkhash:8].js',
   },
 }
 ```
