@@ -1,11 +1,16 @@
 # 概念
 
-- entry
+## entry: string | string[] | { [entryChunkName: string]: string | string[] }
 
-指定 webpack 构建依赖图的入口, 默认值是 `./src/index.js`, 支持指定多个入口.
+指定 webpack 构建依赖图的入口, 默认值是 `./src/index.js`. 它支持一个字符串, 一个数组或一个对象, 当然最常见的还是使用一个对象.
 
 ```js
-entry: path.resolve(__dirname, 'src/index.js'),
+module.exports = {
+  entry: {
+    app: './src/app.js',
+    adminApp: './src/adminApp.js',
+  },
+}
 ```
 
 - output
@@ -13,14 +18,46 @@ entry: path.resolve(__dirname, 'src/index.js'),
 指定 webpack 构建的 bundle 存放目录以及名称.
 
 ```js
-output: {
+module.exports = {
+  output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'my-first-webpack.bundle.js'
-  }
+    filename: 'my-first-webpack.bundle.js',
+  },
+}
 ```
 
-- loader
+## loader
 
-- plugin
+webpack 本身只能解析 `.js` 和 `.json` 文件, loader 是将其他类型转成**模块**, 以添加到依赖图中. 它接收两个属性, 分别是 `test` 和 `use`, 前者是一个**正则表达式**, 匹配需要被 loader 转换的文件格式, 后者是**使用的 loader 名**. 下面的例子是对 `.txt` 格式的文件使用 `raw-loader`. 下面的例子中, 当 webpack 编译器遇到 `import xxx from 'xxx.txt'` 时, 就会先用 `raw-loader` 转一下.
 
-- mode
+```js
+module.exports = {
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+}
+```
+
+## plugin
+
+可以做到 loader 无法做到的事, 如打包优化, 资源管理, 注入环境变量等.
+
+```js
+module.exports = {
+  plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+}
+```
+
+## mode
+
+设置 webpack 的编译模式, 有 `production`, `development` 和 `none` 三种选择, 默认是 `production`, 它可以在不同的编译环境下启用 webpack 内置的优化策略.
+
+```js
+module.exports = {
+  mode: 'production' | 'development' | 'none',
+}
+```
+
+## browser compatibility
+
+webpack 的 import() 和 require.ensure() 需要 Promise, 若要兼容低端浏览器, 需要考虑一些官方提供的 polyfill. (喂! 说你呢, Internet Explorer!)

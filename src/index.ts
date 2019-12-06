@@ -1,1 +1,3 @@
-console.log('hello, webpack')
+import moment from 'moment'
+
+const now = moment()
