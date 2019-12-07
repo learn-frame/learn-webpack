@@ -52,7 +52,7 @@ module.exports = {
 
 ## mode
 
-设置 webpack 的编译模式, 有 `production`, `development` 和 `none` 三种选择, 默认是 `production`, 它可以在不同的编译环境下启用 webpack 内置的优化策略.
+设置 webpack 的编译模式, 有 `production`, `development` 和 `none` 三种选择, 默认是 `production`. 它可以在不同的编译环境下启用 webpack 内置的优化策略. 具体优化策略详情可参照[官方文档](https://webpack.docschina.org/concepts/mode).
 
 ```js
 module.exports = {

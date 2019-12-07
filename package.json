@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode=development --config ./config/webpack.config.js",
-    "build": "webpack --config ./config/webpack.config.js"
+    "build": "node scripts/build.js"
   },
   "devDependencies": {
     "@types/moment": "^2.13.0",
