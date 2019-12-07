@@ -40,6 +40,16 @@ module.exports = {
 }
 ```
 
+对于 loader, 还有两种使用用方式, 分别是 **内联** 和 **CLI**, 不过都不常用.
+
+```js
+// 内联 loader
+import Styles from 'style-loader!css-loader?modules!./styles.css';
+
+// CLI loader
+webpack --module-bind jade-loader --module-bind 'css=style-loader!css-loader'
+```
+
 ## plugin
 
 可以做到 loader 无法做到的事, 如打包优化, 资源管理, 注入环境变量等.

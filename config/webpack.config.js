@@ -34,20 +34,45 @@ module.exports = environment => {
           ],
           exclude: /node_modules/,
         },
+        {
+          test: /\.css$/i,
+          use: [
+            { loader: 'style-loader' }, // style-loader 将 css 注入到 js 中
+            {
+              loader: 'css-loader', // css-loader 会像解析 import/require() 语句一样来解析 @import 和 url()
+              options: {
+                modules: true,
+              },
+            },
+            { loader: 'sass-loader' },
+          ],
+        },
       ],
     },
     plugins: [
+      // 生成 HTML 模版文件
       new HtmlWebpackPlugin({
         template: './public/index.html',
       }),
-      new CleanWebpackPlugin(),
-      // new BundleAnalyzerPlugin(),
+
+      new CleanWebpackPlugin(), // 新编译前清除掉旧 dist 里的文件
+
+      // new BundleAnalyzerPlugin(), // 生成打包后 bundle 分析
+
+      new webpack.ProgressPlugin(), // 打包过程中显示进度
+
+      // 在每个打包后的文件前缀上 banner 信息
       new webpack.BannerPlugin({
         banner: 'Powered by Yancey Inc.',
       }),
-      new MomentLocalesPlugin({
-        localesToKeep: ['es-US', 'zh-CN'],
-      }),
+
+      // 下面的代码可以将 moment 中的 locale 不打包
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
+      // 一个专门配置 moment 中 locale 的插件
+      // new MomentLocalesPlugin({
+      //   localesToKeep: ['es-US', 'zh-CN'],
+      // }),
     ],
     optimization: {
       // splitChunks 用于分离三方库, 它充分利用浏览器缓存
