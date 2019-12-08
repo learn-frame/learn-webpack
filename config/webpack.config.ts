@@ -12,11 +12,18 @@ const configFactory = (env: string): Configuration => {
   const isEnvProduction = env === 'production'
 
   return {
-    mode: 'development',
+    mode: isEnvProduction ? 'production' : 'development',
 
     // context: path.resolve(__dirname),
 
     entry: { app: './src/index.ts' },
+
+    // 动态入口方案
+    // entry: glob.sync('./src/**/index.ts').reduce((acc, path) => {
+    //   const entry = path.replace('/index.ts', '')
+    //   acc[entry] = path
+    //   return acc
+    // }, {} as { [index: string]: string }),
 
     output: {
       filename: '[name].[chunkhash:8].js',
