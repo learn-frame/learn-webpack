@@ -2,7 +2,6 @@
 // yarn typescript ts-node @types/node @types/webpack @types/webpack-dev-server --dev
 
 import path from 'path'
-import glob from 'glob'
 import webpack, { Configuration } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
@@ -34,12 +33,20 @@ const configFactory = (env: string): Configuration => {
     },
 
     resolve: {
-      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      // 在导入模块时, 如果模块是下列扩展名, 将不用写文件后缀
+      extensions: ['.wasm', '.mjs', '.json', '.js', '.jsx', '.ts', '.tsx'],
+
+      // 定义别名, 配合 tsconfig.json 一起食用
       alias: {
         '@shared': path.resolve(__dirname, '../src/shared'),
         '@components': path.resolve(__dirname, '../src/components'),
         '@containers': path.resolve(__dirname, '../src/containers'),
       },
+
+      // 是否允许无扩展名文件, 默认为 false.
+      // 比如 Button 目录下有 index.ts, 如果是 false, 你可以通过 import xxx from 'Button' 来引用
+      // 否则只能老老实实用 import xxx from 'Button/index'
+      // enforceExtension: false,
     },
 
     module: {
@@ -86,6 +93,23 @@ const configFactory = (env: string): Configuration => {
       ],
     },
 
+    optimization: {
+      // 为 true 时启用 TerserPlugin
+      minimize: isEnvProduction,
+
+      // 自定义 TerserPlugin 的配置
+      // minimizer: [],
+
+      // webpack v4+ 提供的全新的通用分块策略
+      splitChunks: {
+        chunks: 'all',
+        name: false,
+      },
+
+      // 为每个仅含有 runtime 的入口起点添加一个额外 chunk
+      runtimeChunk: true,
+    },
+
     plugins: [
       new HtmlWebpackPlugin({
         template: './public/index.html',
@@ -105,12 +129,6 @@ const configFactory = (env: string): Configuration => {
 
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ],
-
-    optimization: {
-      splitChunks: {
-        chunks: 'all',
-      },
-    },
 
     devtool: !isEnvProduction ? 'cheap-module-eval-source-map' : undefined,
 
