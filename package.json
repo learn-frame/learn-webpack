@@ -7,11 +7,12 @@
   "author": "YanceyOfficial <yanceyofficial@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --mode=development --config ./config/webpack.config.ts",
-    "build": "node scripts/build.js"
+    "start": "webpack-dev-server --config ./config/webpack.config.ts",
+    "build": "webpack --config ./config/webpack.config.ts"
   },
   "devDependencies": {
     "@types/html-webpack-plugin": "^3.2.1",
+    "@types/lodash": "^4.14.149",
     "@types/moment": "^2.13.0",
     "@types/node": "^12.12.14",
     "@types/react": "^16.9.15",
@@ -36,6 +37,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

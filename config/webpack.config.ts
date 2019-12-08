@@ -2,19 +2,28 @@
 // yarn typescript ts-node @types/node @types/webpack @types/webpack-dev-server --dev
 
 import path from 'path'
+import glob from 'glob'
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 
 const config: webpack.Configuration = {
   mode: 'development',
+
+  // context: path.resolve(__dirname),
+
   entry: { app: './src/index.ts' },
+
   output: {
     filename: '[name].[chunkhash:8].js',
     path: path.resolve(__dirname, '../dist'),
   },
+
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    alias: {},
   },
+
   module: {
     rules: [
       {
@@ -41,10 +50,17 @@ const config: webpack.Configuration = {
       },
     ],
   },
+
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
+
+    new CleanWebpackPlugin(),
+
+    // new MomentLocalesPlugin({
+    //   localesToKeep: ['es-US', 'zh-CN'],
+    // }),
 
     new webpack.ProgressPlugin(),
 
@@ -54,12 +70,15 @@ const config: webpack.Configuration = {
 
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   ],
+
   optimization: {
     splitChunks: {
       chunks: 'all',
     },
   },
+
   devtool: 'cheap-module-eval-source-map',
+
   devServer: {
     port: 3000,
   },
