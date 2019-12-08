@@ -1,5 +1,8 @@
-$white: #ffffff;
+* {
+  margin: 0;
+  padding: 0;
+}
 
-.homepage {
-  color: $white;
+#app {
+  color: red;
 }

@@ -1,8 +1,12 @@
 import moment from 'moment'
-
-const now = moment()
+import { Button } from '@components/Button'
 
 const appDOM = document.getElementById('app')
+
+console.log(Button)
+
 if (appDOM) {
-  appDOM.innerHTML = now.toJSON()
+  setInterval(function() {
+    appDOM.innerHTML = moment().format('YYYY/MM/DD, HH:mm:ss')
+  }, 1000)
 }
