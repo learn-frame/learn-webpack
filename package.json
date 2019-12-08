@@ -7,8 +7,8 @@
   "author": "YanceyOfficial <yanceyofficial@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --config ./config/webpack.config.ts",
-    "build": "webpack --config ./config/webpack.config.ts"
+    "start": "ts-node ./scripts/start",
+    "build": "ts-node ./scripts/build"
   },
   "devDependencies": {
     "@types/html-webpack-plugin": "^3.2.1",

@@ -3,85 +3,92 @@
 
 import path from 'path'
 import glob from 'glob'
-import webpack from 'webpack'
+import webpack, { Configuration } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 
-const config: webpack.Configuration = {
-  mode: 'development',
+const configFactory = (env: string): Configuration => {
+  const isEnvDevelopment = env === 'development'
+  const isEnvProduction = env === 'production'
 
-  // context: path.resolve(__dirname),
+  return {
+    mode: 'development',
 
-  entry: { app: './src/index.ts' },
+    // context: path.resolve(__dirname),
 
-  output: {
-    filename: '[name].[chunkhash:8].js',
-    path: path.resolve(__dirname, '../dist'),
-  },
+    entry: { app: './src/index.ts' },
 
-  resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
-    alias: {},
-  },
-
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/i,
-        use: [
-          {
-            loader: 'ts-loader',
-          },
-        ],
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.css$/i,
-        use: [
-          { loader: 'style-loader' },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-            },
-          },
-          { loader: 'sass-loader' },
-        ],
-      },
-    ],
-  },
-
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-    }),
-
-    new CleanWebpackPlugin(),
-
-    // new MomentLocalesPlugin({
-    //   localesToKeep: ['es-US', 'zh-CN'],
-    // }),
-
-    new webpack.ProgressPlugin(),
-
-    new webpack.BannerPlugin({
-      banner: 'Powered by Yancey Inc.',
-    }),
-
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-  ],
-
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
+    output: {
+      filename: '[name].[chunkhash:8].js',
+      path: path.resolve(__dirname, '../dist'),
     },
-  },
 
-  devtool: 'cheap-module-eval-source-map',
+    resolve: {
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      alias: {},
+    },
 
-  devServer: {
-    port: 3000,
-  },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/i,
+          use: [
+            {
+              loader: 'ts-loader',
+            },
+          ],
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.css$/i,
+          use: [
+            { loader: 'style-loader' },
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+              },
+            },
+            { loader: 'sass-loader' },
+          ],
+        },
+      ],
+    },
+
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: './public/index.html',
+      }),
+
+      new CleanWebpackPlugin(),
+
+      // new MomentLocalesPlugin({
+      //   localesToKeep: ['es-US', 'zh-CN'],
+      // }),
+
+      new webpack.ProgressPlugin(),
+
+      new webpack.BannerPlugin({
+        banner: 'Powered by Yancey Inc.',
+      }),
+
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    ],
+
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+      },
+    },
+
+    devtool: !isEnvProduction ? 'cheap-module-eval-source-map' : undefined,
+
+    devServer: isEnvProduction
+      ? {
+          port: 3000,
+        }
+      : undefined,
+  }
 }
 
-export default config
+export default configFactory

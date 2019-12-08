@@ -1,5 +1,5 @@
-const webpack = require('webpack')
-const configFactory = require('../config/webpack.config')
+import webpack from 'webpack'
+import configFactory from '../config/webpack.config'
 
 const config = configFactory('production')
 
