@@ -4,7 +4,7 @@ Learn webpack with GeekTime course and other courses.
 
 ## Recipes
 
-- [概念](./docs/concept.md)
+- [概念](./docs/concepts.md)
 
 - [浅谈 hash, thunkhash 和 contenthash](./docs/hash.md)
 
