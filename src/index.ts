@@ -1,4 +1,8 @@
 import moment from 'moment'
 
 const now = moment()
-console.log(now)
+
+const appDOM = document.getElementById('app')
+if (appDOM) {
+  appDOM.innerHTML = now.toISOString()
+}
