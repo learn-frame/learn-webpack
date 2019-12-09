@@ -1,6 +1,3 @@
-// 使用 TypeScript 编写 webpack.config.json 需要安装以下:
-// yarn typescript ts-node @types/node @types/webpack @types/webpack-dev-server --dev
-
 import path from 'path'
 import webpack, { Configuration } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
