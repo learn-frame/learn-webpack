@@ -4,7 +4,9 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 
-const configFactory = (env: string): Configuration => {
+const configFactory = (
+  env: 'development' | 'production' | 'none',
+): Configuration => {
   const isEnvDevelopment = env === 'development'
   const isEnvProduction = env === 'production'
 
@@ -305,6 +307,7 @@ const configFactory = (env: string): Configuration => {
       // poll: 1000,
     },
 
+    // 不将三方依赖打包, 而是直接使用它的 CDN 形式
     externals: {
       lodash: {
         commonjs: 'lodash',
@@ -312,6 +315,20 @@ const configFactory = (env: string): Configuration => {
         amd: 'lodash',
         root: '_',
       },
+    },
+
+    // 配置在非 node 环境也可以使用 node 的 polyfill
+    // 这些配置是 NodeStuffPlugin 提供
+    // 当 target 为 'web' 或者 'webworker', 会自动开启 NodeStuffPlugin
+    node: {
+      module: 'empty',
+      dgram: 'empty',
+      dns: 'mock',
+      fs: 'empty',
+      http2: 'empty',
+      net: 'empty',
+      tls: 'empty',
+      child_process: 'empty',
     },
   }
 }
