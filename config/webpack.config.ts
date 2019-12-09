@@ -2,7 +2,7 @@ import path from 'path'
 import webpack, { Configuration } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
 
 const configFactory = (env: string): Configuration => {
   const isEnvDevelopment = env === 'development'
@@ -11,11 +11,22 @@ const configFactory = (env: string): Configuration => {
   return {
     mode: isEnvProduction ? 'production' : 'development',
 
+    // 指定当前工程的基础路径
     // context: path.resolve(__dirname),
 
-    entry: { app: './src/index.ts' },
+    // 项目的入口, 默认是 src/index, 可支持多个入口
+    entry: {
+      app: './src/index.ts',
 
-    // 动态入口方案
+      // 动态入口方案
+      // ...glob.sync('./src/**/index.ts').reduce((acc, path) => {
+      //   const entry = path.replace('/index.ts', '')
+      //   acc[entry] = path
+      //   return acc
+      // }, {} as { [index: string]: string }),
+    },
+
+    // // 动态入口方案
     // entry: glob.sync('./src/**/index.ts').reduce((acc, path) => {
     //   const entry = path.replace('/index.ts', '')
     //   acc[entry] = path
@@ -23,17 +34,39 @@ const configFactory = (env: string): Configuration => {
     // }, {} as { [index: string]: string }),
 
     output: {
+      // 配置打包输入路径
       path: isEnvProduction ? path.resolve(__dirname, '../dist') : undefined,
 
-      filename: 'static/js/[name].[contenthash:8].js',
+      // 配置打包文件名
+      filename: isEnvProduction
+        ? 'static/js/[name].[contenthash:8].js'
+        : 'static/js/bundle.js',
+
+      // 定义 chunk 文件的名称, 常用于 code-splitting
+      chunkFilename: isEnvProduction
+        ? 'static/js/[name].[contenthash:8].chunk.js'
+        : 'static/js/[name].chunk.js',
 
       // 所包含模块信息的注释, 在开发模式默认为 true, 生产环境默认 false
       // pathinfo: isEnvDevelopment,
 
-      // code-splitting 中会用到该属性
-      // chunkFilename: 'static/js/[name].[contenthash:8].chunk.js',
+      // 定义 chunk 请求超时时间, 默认 12000 毫秒
+      // chunkLoadTimeout: 12000,
 
-      // publicPath: 'cdn.yancey.app/assets/', // 多用于配置 CDN
+      // 多用于配置 CDN
+      // publicPath: 'cdn.yancey.app/assets/',
+
+      // 下面三个一般一起食用, 用于打包库或框架, 我还是用 rollup (手动白眼)
+      // library: 'someLibName',
+      // libraryTarget: 'umd',
+      // auxiliaryComment: 'Test Comment',
+
+      // 只能用于 target 是 web 的情况下, 用于 JSONP 的按需加载
+      // 默认是 false, 即禁用跨域加载; 还支持 'anonymous' (不带凭据启用跨域加载) 和 'use-credentials' (带凭据启用跨域加载)
+      // crossOriginLoading: false,
+
+      // 配置注入的 script 标签的类型, 默认是 'text/javascript', 还支持 'module'
+      // jsonpScriptType: 'text/javascript',
     },
 
     resolve: {
@@ -134,6 +167,14 @@ const configFactory = (env: string): Configuration => {
       //   localesToKeep: ['es-US', 'zh-CN'],
       // }),
 
+      // 拷贝静态文件到 dist 目录下
+      new CopyWebpackPlugin([
+        {
+          from: path.resolve(__dirname, '../public/assets'),
+          to: path.resolve(__dirname, '../dist/public/assets'),
+        },
+      ]),
+
       new webpack.ProgressPlugin(),
 
       new webpack.BannerPlugin({
@@ -229,8 +270,7 @@ const configFactory = (env: string): Configuration => {
           // },
 
           // 请求后的钩子
-          // after: function(app, server) {
-          // },
+          // after: function(app, server) {},
 
           // 添加响应头
           // headers: [],
@@ -249,6 +289,30 @@ const configFactory = (env: string): Configuration => {
     // 配置构建的目标, 默认是 web, 支持下列预置字符串, 也支持一个函数.
     // 'web' | 'webworker' | 'node' | 'async-node' | 'node-webkit' | 'atom' | 'electron' | 'electron-renderer' | 'electron-main'
     target: 'web',
+
+    // 监听模式, 默认会在 webpack-dev-server 中开启
+    // watch: isEnvDevelopment,
+
+    watchOptions: {
+      // 当第一处改动发生时, webpack 会等 300ms,
+      // 如果 300ms 内有其他改动, 将合并到一起进行热更新
+      // aggregateTimeout: 300,
+
+      // 忽略某些文件的变动热更新
+      ignored: ['node_modules'],
+
+      // 当自动热更新不好用时, 启用轮询查询变动
+      // poll: 1000,
+    },
+
+    externals: {
+      lodash: {
+        commonjs: 'lodash',
+        commonjs2: 'lodash',
+        amd: 'lodash',
+        root: '_',
+      },
+    },
   }
 }
 
