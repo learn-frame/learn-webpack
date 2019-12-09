@@ -1,9 +1,7 @@
 import moment from 'moment'
-import { Button } from '@components/Button'
+import { Button } from '@components/Button/Button'
 
 const appDOM = document.getElementById('app')
-
-console.log(Button)
 
 if (appDOM) {
   setInterval(function() {

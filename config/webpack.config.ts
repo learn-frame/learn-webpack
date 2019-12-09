@@ -5,6 +5,7 @@ import path from 'path'
 import webpack, { Configuration } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 const configFactory = (env: string): Configuration => {
   const isEnvDevelopment = env === 'development'
@@ -26,9 +27,15 @@ const configFactory = (env: string): Configuration => {
 
     output: {
       path: isEnvProduction ? path.resolve(__dirname, '../dist') : undefined,
-      filename: '[name].[contenthash:8].js',
-      // pathinfo: isEnvDevelopment, // 所包含模块信息的注释, 在开发模式默认为 true, 生产环境默认 false
-      // chunkFilename: '[name].[contenthash:8].chunk.js', // code-splitting 中会用到该属性
+
+      filename: 'static/js/[name].[contenthash:8].js',
+
+      // 所包含模块信息的注释, 在开发模式默认为 true, 生产环境默认 false
+      // pathinfo: isEnvDevelopment,
+
+      // code-splitting 中会用到该属性
+      // chunkFilename: 'static/js/[name].[contenthash:8].chunk.js',
+
       // publicPath: 'cdn.yancey.app/assets/', // 多用于配置 CDN
     },
 
@@ -97,8 +104,18 @@ const configFactory = (env: string): Configuration => {
       // 为 true 时启用 TerserPlugin
       minimize: isEnvProduction,
 
-      // 自定义 TerserPlugin 的配置
-      // minimizer: [],
+      // 定制 TerserPlugin 的配置
+      // minimizer: [
+      //   new TerserPlugin({
+      //     cache: true,
+      //     parallel: true,
+      //     sourceMap: true,
+      //     terserOptions: {},
+      //   }),
+      // ],
+
+      // 是否在编译出错的情况下生成错误资源
+      // noEmitOnErrors: true,
 
       // webpack v4+ 提供的全新的通用分块策略
       splitChunks: {
@@ -128,8 +145,6 @@ const configFactory = (env: string): Configuration => {
 
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ],
-
-    devtool: !isEnvProduction ? 'cheap-module-eval-source-map' : undefined,
 
     devServer: isEnvDevelopment
       ? {
@@ -231,6 +246,12 @@ const configFactory = (env: string): Configuration => {
           // ]
         }
       : undefined,
+
+    devtool: isEnvProduction ? 'source-map' : 'cheap-module-eval-source-map',
+
+    // 配置构建的目标, 默认是 web, 支持下列预置字符串, 也支持一个函数.
+    // 'web' | 'webworker' | 'node' | 'async-node' | 'node-webkit' | 'atom' | 'electron' | 'electron-renderer' | 'electron-main'
+    target: 'web',
   }
 }
 
