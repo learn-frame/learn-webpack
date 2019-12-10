@@ -15,7 +15,8 @@ const configFactory = (
   return {
     mode: isEnvProduction ? 'production' : 'development',
 
-    // 指定当前工程的基础路径
+    // 指定当前工程的基础路径, 默认使用当前路径, 可提供一个名称
+    // 便于使配置独立于 CWD (current working dictionary) 当前执行路径
     context: path.resolve(__dirname),
 
     // 项目的入口, 默认是 src/index, 可支持多个入口

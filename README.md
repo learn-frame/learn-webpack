@@ -8,6 +8,8 @@ Learn webpack with GeekTime course and other courses.
 
 - [浅谈 hash, thunkhash 和 contenthash](./docs/hash.md)
 
+- [webpack.config.ts 配置一览](./config/webpack.config.ts)
+
 ## License
 
 Learn webpack is licensed under the terms of the [MIT licensed](https://opensource.org/licenses/MIT).
