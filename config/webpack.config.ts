@@ -90,6 +90,7 @@ const configFactory = (
 
       new StatsPlugin('stats.json', {
         chunkModules: true,
+        exclude: [/node_modules[\\\/]moment/, /node_modules[\\\/]lodash/],
       }),
 
       new webpack.ProgressPlugin(),
