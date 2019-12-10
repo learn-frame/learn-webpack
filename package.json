@@ -40,6 +40,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
     "sass-loader": "^8.0.0",
+    "stats-webpack-plugin": "^0.7.0",
     "style-loader": "^1.0.1",
     "terser-webpack-plugin": "^2.2.2",
     "ts-loader": "^6.2.1",

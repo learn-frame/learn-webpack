@@ -1,6 +1,5 @@
 import path from 'path'
 import glob from 'glob'
-import fs from 'fs'
 import webpack, { Configuration } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
@@ -325,9 +324,48 @@ const configFactory = (
     },
 
     performance: {
-      // 在性能出现问题时, 设置错误或警告抛出的等级, 默认为 'warning', 还可以是 false 和 'error'
+      // 在性能出现问题时, 设置异常抛出的等级, 默认为 'warning', 还可以是 false 和 'error'
       hints: false,
+
+      // 设置入口文件的最大 size, 默认为 250kb
+      maxEntrypointSize: 250000,
+
+      // 设置资源文件的最大 size, 默认为 250kb
+      maxAssetSize: 250000,
+
+      // assetFilter 用于告诉 webpack 关注哪些格式的文件
+      // 下面的例子是只关注 js 文件的性能问题
+      assetFilter: function(assetFilename) {
+        return assetFilename.endsWith('.js')
+      },
     },
+
+    // stats 用于配置需要显示的部分编译信息
+    stats: {
+      /*  */
+    },
+
+    // 在出现错误时迫使 webpack 退出其打包过程
+    bail: true,
+
+    // 使用缓存以提高构建速度
+    cache: true,
+
+    // 限时并发数量以微调性能
+    parallelism: 1000,
+
+    // 可以使用此文件来跟踪在每次构建之间的模块变化
+    // 在 code splittnig 会很有用，可辅助进行配置缓存策略
+    recordsPath: path.join(__dirname, 'records.json'),
+
+    // 指定读取最后一条记录的文件的名称
+    recordsInputPath: path.join(__dirname, 'records.json'),
+
+    // 指定记录要写入的位置
+    recordsOutputPath: path.join(__dirname, 'newRecords.json'),
+
+    // 给该配置起个名，适用于一套代码多个配置的场景
+    name: 'awesome webpack config',
   }
 }
 

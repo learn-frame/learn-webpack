@@ -13,6 +13,8 @@ const configFactory = (
   return {
     mode: isEnvProduction ? 'production' : 'development',
 
+    context: path.resolve(__dirname, 'learn-webpack'),
+
     entry: {
       app: './src/index.ts',
     },

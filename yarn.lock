@@ -3587,7 +3587,7 @@ lodash@4.17.14:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.14.tgz#9ce487ae66c96254fe20b599f21b6816028078ba"
   integrity sha512-mmKYbW3GLuJeX+iGP+Y7Gp1AiGHGbXHCOh/jZmrawMmsE7MS4znI3RL2FsjbqOyMayHInjOeykW7PEajUk1/xw==
 
-lodash@4.17.15, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.3, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.2.1:
+lodash@4.17.15, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.2.1:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -5769,6 +5769,13 @@ static-extend@^0.1.1:
   dependencies:
     define-property "^0.2.5"
     object-copy "^0.1.0"
+
+stats-webpack-plugin@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/stats-webpack-plugin/-/stats-webpack-plugin-0.7.0.tgz#ccffe9b745de8bbb155571e063f8263fc0e2bc06"
+  integrity sha512-NT0YGhwuQ0EOX+uPhhUcI6/+1Sq/pMzNuSCBVT4GbFl/ac6I/JZefBcjlECNfAb1t3GOx5dEj1Z7x0cAxeeVLQ==
+  dependencies:
+    lodash "^4.17.4"
 
 "statuses@>= 1.4.0 < 2", "statuses@>= 1.5.0 < 2", statuses@~1.5.0:
   version "1.5.0"
