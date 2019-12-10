@@ -4,6 +4,9 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 
+// @ts-ignore
+import StatsPlugin from 'stats-webpack-plugin'
+
 const configFactory = (
   env: 'development' | 'production' | 'none',
 ): Configuration => {
@@ -12,8 +15,6 @@ const configFactory = (
 
   return {
     mode: isEnvProduction ? 'production' : 'development',
-
-    context: path.resolve(__dirname, 'learn-webpack'),
 
     entry: {
       app: './src/index.ts',
@@ -87,6 +88,10 @@ const configFactory = (
         },
       ]),
 
+      new StatsPlugin('stats.json', {
+        chunkModules: true,
+      }),
+
       new webpack.ProgressPlugin(),
 
       new webpack.BannerPlugin({
@@ -129,6 +134,8 @@ const configFactory = (
       tls: 'empty',
       child_process: 'empty',
     },
+
+    profile: true,
   }
 }
 
