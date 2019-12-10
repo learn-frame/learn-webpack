@@ -1,6 +1,6 @@
 # Cookbooks
 
-这里用来记录一些 webpack 学习中的技巧。
+这里记录一些 webpack 的技巧（我估摸着大概率是一堆 plugin，捂脸逃）。
 
 ## StatsPlugin
 
