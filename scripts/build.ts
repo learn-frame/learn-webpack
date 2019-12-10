@@ -1,5 +1,5 @@
 import webpack from 'webpack'
-import configFactory from '../config/webpack.config'
+import configFactory from '../config/webpack.learning'
 
 const config = configFactory('production')
 
