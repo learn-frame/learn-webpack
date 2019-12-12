@@ -1,7 +1,6 @@
 import path from 'path'
 import Fiber from 'fibers'
 import webpack, { Configuration, Plugin } from 'webpack'
-import safePostCssParser from 'postcss-safe-parser'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
@@ -259,7 +258,6 @@ const configFactory = (
         }),
         new OptimizeCSSAssetsPlugin({
           cssProcessorOptions: {
-            parser: safePostCssParser,
             map: {
               inline: false,
               annotation: true,
