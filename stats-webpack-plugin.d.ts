@@ -1,14 +1,14 @@
+import { Compiler } from 'webpack'
+
 declare module 'stats-webpack-plugin' {
   interface StatsPluginOption {
     chunkModules: boolean
     exclude: RegExp[]
   }
 
-  class StatsPlugin {
+  export default class StatsPlugin {
     constructor(file: string, options: StatsPluginOption)
 
-    apply(): void
+    apply(compile: Compiler): void
   }
-
-  export default StatsPlugin
 }

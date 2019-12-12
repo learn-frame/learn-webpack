@@ -1,12 +1,15 @@
 import path from 'path'
 import Fiber from 'fibers'
-import webpack, { Configuration } from 'webpack'
+import webpack, { Configuration, Plugin } from 'webpack'
+import safePostCssParser from 'postcss-safe-parser'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import StatsPlugin from 'stats-webpack-plugin'
 import ManifestPlugin from 'webpack-manifest-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 
 const cssRegex = /\.css$/
 const cssModuleRegex = /\.module\.css$/
@@ -229,6 +232,42 @@ const configFactory = (
     optimization: {
       minimize: isEnvProduction,
 
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            parse: {
+              ecma: 8,
+            },
+            compress: {
+              ecma: 5,
+              warnings: false,
+              comparisons: false,
+              inline: 2,
+            },
+            mangle: {
+              safari10: true,
+            },
+            output: {
+              ecma: 5,
+              comments: false,
+              ascii_only: true,
+            },
+          },
+          parallel: true,
+          cache: true,
+          sourceMap: true,
+        }),
+        new OptimizeCSSAssetsPlugin({
+          cssProcessorOptions: {
+            parser: safePostCssParser,
+            map: {
+              inline: false,
+              annotation: true,
+            },
+          },
+        }),
+      ],
+
       splitChunks: {
         chunks: 'all',
       },
@@ -236,7 +275,6 @@ const configFactory = (
       runtimeChunk: true,
     },
 
-    // @ts-ignore
     plugins: [
       // 用于生成构建目标 HTML 文件
       new HtmlWebpackPlugin({
@@ -285,7 +323,7 @@ const configFactory = (
 
       // 忽略库中的一些包
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    ].filter(Boolean),
+    ].filter(Boolean) as Plugin[],
 
     devServer: isEnvDevelopment
       ? {
@@ -293,10 +331,15 @@ const configFactory = (
           host: 'localhost',
           hot: true,
           compress: true,
+          publicPath: '/',
+          quiet: true,
+          clientLogLevel: 'none',
           historyApiFallback: {
             disableDotRule: true,
           },
           contentBase: path.join(__dirname, 'public'),
+          watchContentBase: true,
+          overlay: false,
         }
       : undefined,
 
