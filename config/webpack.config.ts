@@ -48,145 +48,172 @@ const configFactory = (
     },
 
     module: {
+      strictExportPresence: true,
+
       rules: [
-        // ts/tsx
-        {
-          test: /\.tsx?$/i,
-          loader: require.resolve('ts-loader'),
-          exclude: /node_modules/,
-        },
+        { parser: { requireEnsure: false } },
 
-        // css
         {
-          test: cssRegex,
-          exclude: cssModuleRegex,
-          use: [
+          oneOf: [
+            // 静态图片 loader,
             {
-              loader: MiniCssExtractPlugin.loader,
-            },
-            {
-              loader: require.resolve('css-loader'),
-              options: { importLoaders: 1 },
-            },
-            {
-              loader: require.resolve('postcss-loader'),
+              test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+              loader: require.resolve('url-loader'),
               options: {
-                ident: 'postcss',
-                plugins: () => [
-                  require('postcss-preset-env')(),
-                  require('stylelint')(),
-                ],
-                sourceMap: isEnvProduction,
+                limit: 10000,
+                name: 'static/media/[name].[hash:8].[ext]',
               },
             },
-          ],
-          sideEffects: true,
-        },
 
-        // css module
-        {
-          test: cssModuleRegex,
-          use: [
+            // ts/tsx
             {
-              loader: MiniCssExtractPlugin.loader,
+              test: /\.tsx?$/i,
+              loader: require.resolve('ts-loader'),
+              exclude: /node_modules/,
             },
-            {
-              loader: require.resolve('css-loader'),
-              options: {
-                importLoaders: 1,
-                modules: {
-                  localIdentName: isEnvProduction
-                    ? '[hash:base64:6]'
-                    : '[path][name]__[local]',
-                },
-              },
-            },
-            {
-              loader: require.resolve('postcss-loader'),
-              options: {
-                ident: 'postcss',
-                plugins: () => [
-                  require('postcss-preset-env')(),
-                  require('stylelint')(),
-                ],
-                sourceMap: isEnvProduction,
-              },
-            },
-          ],
-        },
 
-        // sass
-        {
-          test: sassRegex,
-          exclude: sassModuleRegex,
-          use: [
+            // css
             {
-              loader: MiniCssExtractPlugin.loader,
-            },
-            {
-              loader: require.resolve('css-loader'),
-              options: { importLoaders: 2 },
-            },
-            {
-              loader: require.resolve('sass-loader'),
-              options: {
-                implementation: require('sass'),
-                sassOptions: {
-                  fiber: Fiber,
+              test: cssRegex,
+              exclude: cssModuleRegex,
+              use: [
+                {
+                  loader: MiniCssExtractPlugin.loader,
                 },
-              },
+                {
+                  loader: require.resolve('css-loader'),
+                  options: { importLoaders: 1 },
+                },
+                {
+                  loader: require.resolve('postcss-loader'),
+                  options: {
+                    ident: 'postcss',
+                    plugins: () => [
+                      require('postcss-preset-env')(),
+                      require('stylelint')(),
+                    ],
+                    sourceMap: isEnvProduction,
+                  },
+                },
+              ],
+              sideEffects: true,
             },
-            {
-              loader: require.resolve('postcss-loader'),
-              options: {
-                ident: 'postcss',
-                plugins: () => [
-                  require('postcss-preset-env')(),
-                  require('stylelint')(),
-                ],
-                sourceMap: isEnvProduction,
-              },
-            },
-          ],
-          sideEffects: true,
-        },
 
-        // sass module
-        {
-          test: sassModuleRegex,
-          use: [
+            // css module
             {
-              loader: MiniCssExtractPlugin.loader,
-            },
-            {
-              loader: require.resolve('css-loader'),
-              options: {
-                importLoaders: 2,
-                modules: {
-                  localIdentName: isEnvProduction
-                    ? '[hash:base64:6]'
-                    : '[path][name]__[local]',
+              test: cssModuleRegex,
+              use: [
+                {
+                  loader: MiniCssExtractPlugin.loader,
                 },
-              },
-            },
-            {
-              loader: require.resolve('sass-loader'),
-              options: {
-                implementation: require('sass'),
-                sassOptions: {
-                  fiber: Fiber,
+                {
+                  loader: require.resolve('css-loader'),
+                  options: {
+                    importLoaders: 1,
+                    modules: {
+                      localIdentName: isEnvProduction
+                        ? '[hash:base64:6]'
+                        : '[path][name]__[local]',
+                    },
+                  },
                 },
-              },
+                {
+                  loader: require.resolve('postcss-loader'),
+                  options: {
+                    ident: 'postcss',
+                    plugins: () => [
+                      require('postcss-preset-env')(),
+                      require('stylelint')(),
+                    ],
+                    sourceMap: isEnvProduction,
+                  },
+                },
+              ],
             },
+
+            // sass
             {
-              loader: require.resolve('postcss-loader'),
+              test: sassRegex,
+              exclude: sassModuleRegex,
+              use: [
+                {
+                  loader: MiniCssExtractPlugin.loader,
+                },
+                {
+                  loader: require.resolve('css-loader'),
+                  options: { importLoaders: 2 },
+                },
+                {
+                  loader: require.resolve('sass-loader'),
+                  options: {
+                    implementation: require('sass'),
+                    sassOptions: {
+                      fiber: Fiber,
+                    },
+                  },
+                },
+                {
+                  loader: require.resolve('postcss-loader'),
+                  options: {
+                    ident: 'postcss',
+                    plugins: () => [
+                      require('postcss-preset-env')(),
+                      require('stylelint')(),
+                    ],
+                    sourceMap: isEnvProduction,
+                  },
+                },
+              ],
+              sideEffects: true,
+            },
+
+            // sass module
+            {
+              test: sassModuleRegex,
+              use: [
+                {
+                  loader: MiniCssExtractPlugin.loader,
+                },
+                {
+                  loader: require.resolve('css-loader'),
+                  options: {
+                    importLoaders: 2,
+                    modules: {
+                      localIdentName: isEnvProduction
+                        ? '[hash:base64:6]'
+                        : '[path][name]__[local]',
+                    },
+                  },
+                },
+                {
+                  loader: require.resolve('sass-loader'),
+                  options: {
+                    implementation: require('sass'),
+                    sassOptions: {
+                      fiber: Fiber,
+                    },
+                  },
+                },
+                {
+                  loader: require.resolve('postcss-loader'),
+                  options: {
+                    ident: 'postcss',
+                    plugins: () => [
+                      require('postcss-preset-env')(),
+                      require('stylelint')(),
+                    ],
+                    sourceMap: isEnvProduction,
+                  },
+                },
+              ],
+            },
+
+            // 图片走 url-loader, 其他格式静态文件走 file-loader
+            {
+              loader: require.resolve('file-loader'),
+              exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
               options: {
-                ident: 'postcss',
-                plugins: () => [
-                  require('postcss-preset-env')(),
-                  require('stylelint')(),
-                ],
-                sourceMap: isEnvProduction,
+                name: 'static/media/[name].[hash:8].[ext]',
               },
             },
           ],
