@@ -80,6 +80,7 @@ const configFactory = (
               use: [
                 {
                   loader: MiniCssExtractPlugin.loader,
+                  options: { publicPath: '../../' },
                 },
                 {
                   loader: require.resolve('css-loader'),
@@ -106,6 +107,7 @@ const configFactory = (
               use: [
                 {
                   loader: MiniCssExtractPlugin.loader,
+                  options: { publicPath: '../../' },
                 },
                 {
                   loader: require.resolve('css-loader'),
@@ -139,6 +141,7 @@ const configFactory = (
               use: [
                 {
                   loader: MiniCssExtractPlugin.loader,
+                  options: { publicPath: '../../' },
                 },
                 {
                   loader: require.resolve('css-loader'),
@@ -174,6 +177,7 @@ const configFactory = (
               use: [
                 {
                   loader: MiniCssExtractPlugin.loader,
+                  options: { publicPath: '../../' },
                 },
                 {
                   loader: require.resolve('css-loader'),
@@ -232,6 +236,7 @@ const configFactory = (
       runtimeChunk: true,
     },
 
+    // @ts-ignore
     plugins: [
       // 用于生成构建目标 HTML 文件
       new HtmlWebpackPlugin({
@@ -244,8 +249,8 @@ const configFactory = (
       // 用于复制文件夹, 多用于拷贝静态资源
       new CopyWebpackPlugin([
         {
-          from: path.resolve(__dirname, '../public/assets'),
-          to: path.resolve(__dirname, '../dist/public/assets'),
+          from: path.resolve(__dirname, '../public/'),
+          to: path.resolve(__dirname, '../dist/'),
         },
       ]),
 
@@ -259,29 +264,34 @@ const configFactory = (
 
       // 辅助生成统计信息文件 stats.json, 最好同步开启 profile: true
       // 生成的 stats 文件可上传至 http://webpack.github.io/analyse/
-      new StatsPlugin('stats.json', {
-        chunkModules: true,
-        exclude: [/node_modules[\\\/]moment/, /node_modules[\\\/]lodash/],
-      }),
+      isEnvProduction &&
+        new StatsPlugin('stats.json', {
+          chunkModules: true,
+          exclude: [/node_modules[\\\/]moment/, /node_modules[\\\/]lodash/],
+        }),
 
-      new ManifestPlugin(),
+      isEnvProduction && new ManifestPlugin(),
+
+      isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
 
       // 在终端显示构建进度条
       new webpack.ProgressPlugin(),
 
       // 给打包的文件头部注入版权信息
-      new webpack.BannerPlugin({
-        banner: 'Powered by Yancey Inc.',
-      }),
+      isEnvProduction &&
+        new webpack.BannerPlugin({
+          banner: 'Powered by Yancey Inc.',
+        }),
 
       // 忽略库中的一些包
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    ],
+    ].filter(Boolean),
 
     devServer: isEnvDevelopment
       ? {
           port: 3000,
           host: 'localhost',
+          hot: true,
           compress: true,
           historyApiFallback: {
             disableDotRule: true,
