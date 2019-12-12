@@ -6,6 +6,7 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import StatsPlugin from 'stats-webpack-plugin'
+import ManifestPlugin from 'webpack-manifest-plugin'
 
 const cssRegex = /\.css$/
 const cssModuleRegex = /\.module\.css$/
@@ -262,6 +263,8 @@ const configFactory = (
         chunkModules: true,
         exclude: [/node_modules[\\\/]moment/, /node_modules[\\\/]lodash/],
       }),
+
+      new ManifestPlugin(),
 
       // 在终端显示构建进度条
       new webpack.ProgressPlugin(),
