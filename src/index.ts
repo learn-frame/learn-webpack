@@ -2,7 +2,8 @@ import moment from 'moment'
 
 // import './assets/styles/index.css'
 // import styles from './assets/styles/index.module.css'
-import './assets/styles/index.scss'
+// import './assets/styles/index.scss'
+import styles from './assets/styles/index.module.scss'
 
 const appDOM = document.getElementById('app')
 
@@ -11,13 +12,13 @@ if (appDOM) {
   //   appDOM.innerHTML = moment().format('YYYY/MM/DD, HH:mm:ss')
   // }, 1000)
 
-  appDOM.insertAdjacentHTML(
-    'afterbegin',
-    `<div class='hello'>hello, webpack</div>`,
-  )
-
   // appDOM.insertAdjacentHTML(
   //   'afterbegin',
-  //   `<div class='${styles.hello}'>hello, webpack</div>`,
+  //   `<div class='hello'>hello, webpack</div>`,
   // )
+
+  appDOM.insertAdjacentHTML(
+    'afterbegin',
+    `<div class='${styles.hello}'>hello, webpack</div>`,
+  )
 }

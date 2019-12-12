@@ -1,4 +1,5 @@
 import path from 'path'
+import Fiber from 'fibers'
 import webpack, { Configuration } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
@@ -48,14 +49,14 @@ const configFactory = (
 
     module: {
       rules: [
-        // ts/tsx 的 loader
+        // ts/tsx
         {
           test: /\.tsx?$/i,
           loader: require.resolve('ts-loader'),
           exclude: /node_modules/,
         },
 
-        // css 的 loader
+        // css
         {
           test: cssRegex,
           exclude: cssModuleRegex,
@@ -65,12 +66,24 @@ const configFactory = (
             },
             {
               loader: require.resolve('css-loader'),
+              options: { importLoaders: 1 },
+            },
+            {
+              loader: require.resolve('postcss-loader'),
+              options: {
+                ident: 'postcss',
+                plugins: () => [
+                  require('postcss-preset-env')(),
+                  require('stylelint')(),
+                ],
+                sourceMap: isEnvProduction,
+              },
             },
           ],
-          sideEffects: true
+          sideEffects: true,
         },
 
-        // css module 的 loader
+        // css module
         {
           test: cssModuleRegex,
           use: [
@@ -80,6 +93,7 @@ const configFactory = (
             {
               loader: require.resolve('css-loader'),
               options: {
+                importLoaders: 1,
                 modules: {
                   localIdentName: isEnvProduction
                     ? '[hash:base64:6]'
@@ -87,10 +101,21 @@ const configFactory = (
                 },
               },
             },
+            {
+              loader: require.resolve('postcss-loader'),
+              options: {
+                ident: 'postcss',
+                plugins: () => [
+                  require('postcss-preset-env')(),
+                  require('stylelint')(),
+                ],
+                sourceMap: isEnvProduction,
+              },
+            },
           ],
         },
 
-        // sass 的 loader
+        // sass
         {
           test: sassRegex,
           exclude: sassModuleRegex,
@@ -99,7 +124,70 @@ const configFactory = (
               loader: MiniCssExtractPlugin.loader,
             },
             {
+              loader: require.resolve('css-loader'),
+              options: { importLoaders: 2 },
+            },
+            {
               loader: require.resolve('sass-loader'),
+              options: {
+                implementation: require('sass'),
+                sassOptions: {
+                  fiber: Fiber,
+                },
+              },
+            },
+            {
+              loader: require.resolve('postcss-loader'),
+              options: {
+                ident: 'postcss',
+                plugins: () => [
+                  require('postcss-preset-env')(),
+                  require('stylelint')(),
+                ],
+                sourceMap: isEnvProduction,
+              },
+            },
+          ],
+          sideEffects: true,
+        },
+
+        // sass module
+        {
+          test: sassModuleRegex,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
+            {
+              loader: require.resolve('css-loader'),
+              options: {
+                importLoaders: 2,
+                modules: {
+                  localIdentName: isEnvProduction
+                    ? '[hash:base64:6]'
+                    : '[path][name]__[local]',
+                },
+              },
+            },
+            {
+              loader: require.resolve('sass-loader'),
+              options: {
+                implementation: require('sass'),
+                sassOptions: {
+                  fiber: Fiber,
+                },
+              },
+            },
+            {
+              loader: require.resolve('postcss-loader'),
+              options: {
+                ident: 'postcss',
+                plugins: () => [
+                  require('postcss-preset-env')(),
+                  require('stylelint')(),
+                ],
+                sourceMap: isEnvProduction,
+              },
             },
           ],
         },
