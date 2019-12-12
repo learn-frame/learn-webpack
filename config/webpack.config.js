@@ -1,23 +1,20 @@
-import path from 'path'
-import Fiber from 'fibers'
-import webpack, { Configuration, Plugin } from 'webpack'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
-import { CleanWebpackPlugin } from 'clean-webpack-plugin'
-import CopyWebpackPlugin from 'copy-webpack-plugin'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import StatsPlugin from 'stats-webpack-plugin'
-import ManifestPlugin from 'webpack-manifest-plugin'
-import TerserPlugin from 'terser-webpack-plugin'
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
+const path = require('path')
+const Fiber = require('fibers')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const ManifestPlugin = require('webpack-manifest-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 const cssRegex = /\.css$/
 const cssModuleRegex = /\.module\.css$/
 const sassRegex = /\.(scss|sass)$/
 const sassModuleRegex = /\.module\.(scss|sass)$/
 
-const configFactory = (
-  env: 'development' | 'production' | 'none',
-): Configuration => {
+const configFactory = env => {
   const isEnvDevelopment = env === 'development'
   const isEnvProduction = env === 'production'
 
@@ -70,8 +67,9 @@ const configFactory = (
 
             // ts/tsx
             {
-              test: /\.tsx?$/i,
-              loader: require.resolve('ts-loader'),
+              test: /\.tsx?$/,
+              include: path.resolve(__dirname, '../src'),
+              use: ['ts-loader'],
               exclude: /node_modules/,
             },
 
@@ -256,6 +254,7 @@ const configFactory = (
           cache: true,
           sourceMap: true,
         }),
+
         new OptimizeCSSAssetsPlugin({
           cssProcessorOptions: {
             map: {
@@ -298,14 +297,6 @@ const configFactory = (
         chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
       }),
 
-      // 辅助生成统计信息文件 stats.json, 最好同步开启 profile: true
-      // 生成的 stats 文件可上传至 http://webpack.github.io/analyse/
-      isEnvProduction &&
-        new StatsPlugin('stats.json', {
-          chunkModules: true,
-          exclude: [/node_modules[\\\/]moment/, /node_modules[\\\/]lodash/],
-        }),
-
       isEnvProduction && new ManifestPlugin(),
 
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
@@ -313,15 +304,9 @@ const configFactory = (
       // 在终端显示构建进度条
       new webpack.ProgressPlugin(),
 
-      // 给打包的文件头部注入版权信息
-      isEnvProduction &&
-        new webpack.BannerPlugin({
-          banner: 'Powered by Yancey Inc.',
-        }),
-
       // 忽略库中的一些包
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    ].filter(Boolean) as Plugin[],
+    ].filter(Boolean),
 
     devServer: isEnvDevelopment
       ? {
@@ -344,16 +329,11 @@ const configFactory = (
     devtool: isEnvProduction ? 'source-map' : 'cheap-module-eval-source-map',
 
     externals: {
-      lodash: {
-        commonjs: 'lodash',
-        commonjs2: 'lodash',
-        amd: 'lodash',
-        root: '_',
-      },
+      react: 'React',
     },
 
     profile: true,
   }
 }
 
-export default configFactory
+module.exports = configFactory

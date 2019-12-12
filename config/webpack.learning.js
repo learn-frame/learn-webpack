@@ -1,14 +1,12 @@
-import path from 'path'
-import glob from 'glob'
-import webpack, { Configuration } from 'webpack'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
-import { CleanWebpackPlugin } from 'clean-webpack-plugin'
-import CopyWebpackPlugin from 'copy-webpack-plugin'
-import TerserPlugin from 'terser-webpack-plugin'
+const path = require('path')
+const glob = require('glob')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
-const configFactory = (
-  env: 'development' | 'production' | 'none',
-): Configuration => {
+const configFactory = env => {
   const isEnvDevelopment = env === 'development'
   const isEnvProduction = env === 'production'
 
@@ -28,7 +26,7 @@ const configFactory = (
         const entry = path.replace('/index.ts', '')
         acc[entry] = path
         return acc
-      }, {} as { [index: string]: string }),
+      }, {}),
     },
 
     output: {
@@ -244,7 +242,7 @@ const configFactory = (
               secure: false,
 
               // 下面的例子中, /api 代理到本地服务器, 但index.html 还是接收服务器的, 可以使用 bypass
-              bypass: function(req: any, res: any, proxyOptions: any) {
+              bypass: function(req, res, proxyOptions) {
                 if (req.headers.accept.indexOf('html') !== -1) {
                   console.log('Skipping proxy for browser request.')
                   return '/index.html'
