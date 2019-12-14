@@ -1,6 +1,9 @@
 # Cookbooks
 
-这里记录一些 webpack 的技巧 (我估摸着大概率是一堆 plugin, 捂脸逃).
+这里记录一些 webpack 的技巧和注意事项.
+
+- [StatsPlugin](#statsplugin)
+- [loader 书写顺序](#loader-%E4%B9%A6%E5%86%99%E9%A1%BA%E5%BA%8F)
 
 ## StatsPlugin
 
@@ -20,5 +23,27 @@ module.exports = {
   ],
 
   profile: true,
+}
+```
+
+## loader 书写顺序
+
+loader 的执行顺序是从右向左, 以 css 为例, 先要引用 style-loader, 再引用 css-loader, 这样先会通过 css-loader 解析 css, 再通过 style-loader 注入到 js 中.
+
+```ts
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [
+          { loader: 'style-loader' },
+          {
+            loader: 'css-loader',
+          },
+        ],
+      },
+    ],
+  },
 }
 ```
