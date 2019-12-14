@@ -6,7 +6,9 @@ Learn webpack with GeekTime course and other courses.
 
 - [概念](./docs/concepts.md)
 
-- [浅谈 hash, thunkhash 和 contenthash](./docs/hash.md)
+- [浅谈 hash, thunkhash 和 contenthash](./docs/file-fingerprint.md)
+
+- [浅谈 hash, thunkhash 和 contenthash](./docs/file-fingerprint.md)
 
 - [Cookbooks](./docs/cookbooks.md)
 

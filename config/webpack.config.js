@@ -320,7 +320,7 @@ const configFactory = env => {
           historyApiFallback: {
             disableDotRule: true,
           },
-          contentBase: path.join(__dirname, 'public'),
+          contentBase: path.join(__dirname, 'dist'),
           watchContentBase: true,
           overlay: false,
         }

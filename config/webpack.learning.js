@@ -91,6 +91,9 @@ const configFactory = env => {
           loader: require.resolve('ts-loader'),
           exclude: /node_modules/,
         },
+        // loader 的顺序是从右向左, 因此先要引用 style-loader
+        // 再引用 css-loader
+        // 这样先会通过 css-loader 解析 css, 再通过 style-loader 注入到 js 中
         {
           test: /\.css$/i,
           use: [
@@ -294,7 +297,7 @@ const configFactory = env => {
       // 忽略某些文件的变动热更新
       ignored: ['node_modules'],
 
-      // 当自动热更新不好用时, 启用轮询查询变动
+      // 每秒轮询查询的次数
       poll: 1000,
     },
 
