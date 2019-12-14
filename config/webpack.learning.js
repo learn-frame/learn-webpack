@@ -163,10 +163,6 @@ const configFactory = env => {
 
       new CleanWebpackPlugin(),
 
-      // new MomentLocalesPlugin({
-      //   localesToKeep: ['es-US', 'zh-CN'],
-      // }),
-
       // 拷贝静态文件到 dist 目录下
       new CopyWebpackPlugin([
         {
@@ -174,6 +170,10 @@ const configFactory = env => {
           to: path.resolve(__dirname, '../dist/public/assets'),
         },
       ]),
+
+      // new MomentLocalesPlugin({
+      //   localesToKeep: ['es-US', 'zh-CN'],
+      // }),
 
       new webpack.ProgressPlugin(),
 

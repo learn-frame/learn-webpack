@@ -1,15 +1,18 @@
 const webpack = require('webpack')
+const fs = require('fs-extra')
 const configFactory = require('../config/webpack.config')
+const paths = require('../config/path')
 
 const config = configFactory('production')
 
 async function build() {
   console.log('Creating an optimized production build...')
 
-  const compiler = webpack(config)
+  fs.emptyDirSync(paths.distPath)
 
-  // 在脚本中, 也可以用如下方式引入插件
-  // new webpack.ProgressPlugin().apply(compiler)
+  copyPublicFolder()
+
+  const compiler = webpack(config)
 
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
@@ -23,6 +26,13 @@ async function build() {
         })
       }
     })
+  })
+}
+
+function copyPublicFolder() {
+  fs.copySync(paths.publicPath, paths.distPath, {
+    dereference: true,
+    filter: file => file !== paths.htmlTemplate,
   })
 }
 

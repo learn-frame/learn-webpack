@@ -2,8 +2,6 @@ const path = require('path')
 const Fiber = require('fibers')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
@@ -61,7 +59,7 @@ const configFactory = env => {
               loader: require.resolve('url-loader'),
               options: {
                 limit: 10000,
-                name: 'static/media/[name].[hash:8].[ext]',
+                name: 'static/media/[name].[emoji].[hash:8].[ext]',
               },
             },
 
@@ -276,18 +274,20 @@ const configFactory = env => {
       // 用于生成构建目标 HTML 文件
       new HtmlWebpackPlugin({
         template: './public/index.html',
-      }),
-
-      // 用于清除旧的构建文件
-      new CleanWebpackPlugin(),
-
-      // 用于复制文件夹, 多用于拷贝静态资源
-      new CopyWebpackPlugin([
-        {
-          from: path.resolve(__dirname, '../public/'),
-          to: path.resolve(__dirname, '../dist/'),
+        inject: true,
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true,
+          minifyCSS: true,
+          minifyURLs: true,
         },
-      ]),
+      }),
 
       // MiniCssExtractPlugin 的功能与 style-loader 正相反
       // style-loader 是将样式注入到 js 文件中
