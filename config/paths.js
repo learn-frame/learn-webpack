@@ -8,4 +8,5 @@ module.exports = {
   publicPath: resolveApp('public'),
   distPath: resolveApp('dist'),
   htmlTemplate: resolveApp('public/index.html'),
+  srcPath: resolveApp('src'),
 }

@@ -1,3 +1,4 @@
+const paths = require('./paths')
 const path = require('path')
 const Fiber = require('fibers')
 const webpack = require('webpack')
@@ -6,6 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 const cssRegex = /\.css$/
 const cssModuleRegex = /\.module\.css$/
@@ -24,7 +26,7 @@ const configFactory = env => {
     },
 
     output: {
-      path: isEnvProduction ? path.resolve(__dirname, '../dist') : undefined,
+      path: isEnvProduction ? paths.distPath : undefined,
 
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].js'
@@ -64,8 +66,12 @@ const configFactory = env => {
 
             {
               test: /\.tsx?$/,
-              include: path.resolve(__dirname, '../src'),
-              use: ['ts-loader'],
+              include: paths.srcPath,
+              loader: ['ts-loader'],
+              options: {
+                transpileOnly: true,
+                experimentalWatchApi: true,
+              },
               exclude: /node_modules/,
             },
 
@@ -265,7 +271,7 @@ const configFactory = env => {
 
     plugins: [
       new HtmlWebpackPlugin({
-        template: './public/index.html',
+        template: paths.htmlTemplate,
         inject: true,
         minify: {
           removeComments: true,
@@ -285,6 +291,8 @@ const configFactory = env => {
         filename: 'static/css/[name].[contenthash:8].css',
         chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
       }),
+
+      new ForkTsCheckerWebpackPlugin(),
 
       isEnvProduction && new ManifestPlugin(),
 
@@ -307,7 +315,7 @@ const configFactory = env => {
           historyApiFallback: {
             disableDotRule: true,
           },
-          contentBase: path.join(__dirname, 'dist'),
+          contentBase: paths.distPath,
           watchContentBase: true,
           overlay: false,
         }
