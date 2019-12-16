@@ -17,7 +17,7 @@ const configFactory = env => {
   const isEnvProduction = env === 'production'
 
   return {
-    mode: isEnvProduction ? 'production' : 'development',
+    mode: env,
 
     entry: {
       app: './src/index.ts',
@@ -53,7 +53,6 @@ const configFactory = env => {
 
         {
           oneOf: [
-            // 静态图片 loader,
             {
               test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
               loader: require.resolve('url-loader'),
@@ -63,7 +62,6 @@ const configFactory = env => {
               },
             },
 
-            // ts/tsx
             {
               test: /\.tsx?$/,
               include: path.resolve(__dirname, '../src'),
@@ -71,7 +69,6 @@ const configFactory = env => {
               exclude: /node_modules/,
             },
 
-            // css
             {
               test: cssRegex,
               exclude: cssModuleRegex,
@@ -99,7 +96,6 @@ const configFactory = env => {
               sideEffects: true,
             },
 
-            // css module
             {
               test: cssModuleRegex,
               use: [
@@ -132,7 +128,6 @@ const configFactory = env => {
               ],
             },
 
-            // sass
             {
               test: sassRegex,
               exclude: sassModuleRegex,
@@ -169,7 +164,6 @@ const configFactory = env => {
               sideEffects: true,
             },
 
-            // sass module
             {
               test: sassModuleRegex,
               use: [
@@ -211,7 +205,6 @@ const configFactory = env => {
               ],
             },
 
-            // 图片走 url-loader, 其他格式静态文件走 file-loader
             {
               loader: require.resolve('file-loader'),
               exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
@@ -271,7 +264,6 @@ const configFactory = env => {
     },
 
     plugins: [
-      // 用于生成构建目标 HTML 文件
       new HtmlWebpackPlugin({
         template: './public/index.html',
         inject: true,
@@ -289,9 +281,6 @@ const configFactory = env => {
         },
       }),
 
-      // MiniCssExtractPlugin 的功能与 style-loader 正相反
-      // style-loader 是将样式注入到 js 文件中
-      // 而 MiniCssExtractPlugin 是将 css 文件分离出来
       new MiniCssExtractPlugin({
         filename: 'static/css/[name].[contenthash:8].css',
         chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
@@ -301,10 +290,8 @@ const configFactory = env => {
 
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
 
-      // 在终端显示构建进度条
       new webpack.ProgressPlugin(),
 
-      // 忽略库中的一些包
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ].filter(Boolean),
 
