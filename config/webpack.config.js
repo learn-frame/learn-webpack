@@ -8,6 +8,7 @@ const ManifestPlugin = require('webpack-manifest-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const cssRegex = /\.css$/
 const cssModuleRegex = /\.module\.css$/
@@ -27,6 +28,8 @@ const configFactory = env => {
 
     output: {
       path: isEnvProduction ? paths.distPath : undefined,
+
+      pathinfo: isEnvDevelopment,
 
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].js'
@@ -51,7 +54,9 @@ const configFactory = env => {
       strictExportPresence: true,
 
       rules: [
-        { parser: { requireEnsure: false } },
+        {
+          parser: { requireEnsure: false },
+        },
 
         {
           oneOf: [
@@ -67,7 +72,7 @@ const configFactory = env => {
             {
               test: /\.tsx?$/,
               include: paths.srcPath,
-              loader: ['ts-loader'],
+              loader: 'ts-loader',
               options: {
                 transpileOnly: true,
                 experimentalWatchApi: true,
@@ -85,7 +90,10 @@ const configFactory = env => {
                 },
                 {
                   loader: require.resolve('css-loader'),
-                  options: { importLoaders: 1 },
+                  options: {
+                    importLoaders: 1,
+                    sourceMap: isEnvProduction,
+                  },
                 },
                 {
                   loader: require.resolve('postcss-loader'),
@@ -113,6 +121,7 @@ const configFactory = env => {
                   loader: require.resolve('css-loader'),
                   options: {
                     importLoaders: 1,
+                    sourceMap: isEnvProduction,
                     modules: {
                       localIdentName: isEnvProduction
                         ? '[hash:base64:6]'
@@ -144,7 +153,10 @@ const configFactory = env => {
                 },
                 {
                   loader: require.resolve('css-loader'),
-                  options: { importLoaders: 2 },
+                  options: {
+                    importLoaders: 2,
+                    sourceMap: isEnvProduction,
+                  },
                 },
                 {
                   loader: require.resolve('sass-loader'),
@@ -181,6 +193,7 @@ const configFactory = env => {
                   loader: require.resolve('css-loader'),
                   options: {
                     importLoaders: 2,
+                    sourceMap: isEnvProduction,
                     modules: {
                       localIdentName: isEnvProduction
                         ? '[hash:base64:6]'
@@ -292,6 +305,13 @@ const configFactory = env => {
         chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
       }),
 
+      new CopyWebpackPlugin([
+        {
+          from: path.resolve(__dirname, '../public'),
+          to: path.resolve(__dirname, '../dist'),
+        },
+      ]),
+
       new ForkTsCheckerWebpackPlugin(),
 
       isEnvProduction && new ManifestPlugin(),
@@ -315,7 +335,7 @@ const configFactory = env => {
           historyApiFallback: {
             disableDotRule: true,
           },
-          contentBase: paths.distPath,
+          contentBase: paths.publicPath,
           watchContentBase: true,
           overlay: false,
         }
