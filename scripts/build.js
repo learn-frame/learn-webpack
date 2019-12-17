@@ -10,8 +10,6 @@ async function build() {
 
   fs.emptyDirSync(paths.distPath)
 
-  copyPublicFolder()
-
   const compiler = webpack(config)
 
   return new Promise((resolve, reject) => {
@@ -26,13 +24,6 @@ async function build() {
         })
       }
     })
-  })
-}
-
-function copyPublicFolder() {
-  fs.copySync(paths.publicPath, paths.distPath, {
-    dereference: true,
-    filter: file => file !== paths.htmlTemplate,
   })
 }
 

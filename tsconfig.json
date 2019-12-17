@@ -18,9 +18,7 @@
     "moduleResolution": "Node",
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["./src/components/*"],
-      "@containers*": ["./src/containers/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@src/*": ["./src/*"]
     },
     "esModuleInterop": true,
     "experimentalDecorators": true,

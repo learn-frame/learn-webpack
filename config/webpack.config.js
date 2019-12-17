@@ -44,9 +44,7 @@ const configFactory = env => {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
 
       alias: {
-        '@shared': path.resolve(__dirname, '../src/shared'),
-        '@components': path.resolve(__dirname, '../src/components'),
-        '@containers': path.resolve(__dirname, '../src/containers'),
+        '@src': paths.srcPath,
       },
     },
 
@@ -307,8 +305,8 @@ const configFactory = env => {
 
       new CopyWebpackPlugin([
         {
-          from: path.resolve(__dirname, '../public'),
-          to: path.resolve(__dirname, '../dist'),
+          from: paths.publicPath,
+          to: paths.distPath,
         },
       ]),
 

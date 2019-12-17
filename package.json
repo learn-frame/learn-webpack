@@ -13,8 +13,17 @@
     "start": "node ./scripts/start",
     "build": "node ./scripts/build"
   },
+  "dependencies": {
+    "moment": "^2.24.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-redux": "^7.1.3",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.4",
+    "redux-saga": "^1.1.3"
+  },
   "devDependencies": {
-    "@types/fs-extra": "^8.0.1",
     "@types/node": "^12.12.14",
     "@types/react": "^16.9.15",
     "@types/react-dom": "^16.9.4",
@@ -50,16 +59,6 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0",
     "webpack-manifest-plugin": "^2.2.0"
-  },
-  "dependencies": {
-    "moment": "^2.24.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-redux": "^7.1.3",
-    "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2",
-    "redux": "^4.0.4",
-    "redux-saga": "^1.1.3"
   },
   "config": {
     "commitizen": {
