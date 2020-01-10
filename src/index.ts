@@ -12,7 +12,7 @@ if (appDOM) {
   appDOM.insertAdjacentHTML(
     'afterbegin',
     // `<div class=${styles.hello}>${circle(10)}</div>`,
-    `<figure><img class='${styles.img}' src='${sayaka_1}'/><img class='${styles.img}' src='${sayaka_2}'/></figure>`,
-    // `<div class=${styles.hello}>${moment().toJSON()}</div>`,
+    // `<figure><img class='${styles.img}' src='${sayaka_1}'/><img class='${styles.img}' src='${sayaka_2}'/></figure>`,
+    `<div class=${styles.hello}>${moment().toJSON()}</div>`,
   )
 }

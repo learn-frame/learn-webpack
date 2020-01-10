@@ -58,6 +58,22 @@ const configFactory = env => {
         },
 
         {
+          test: /\.(js|mjs|jsx|ts|tsx)$/,
+          enforce: 'pre',
+          use: [
+            {
+              options: {
+                cache: true,
+                eslintPath: require.resolve('eslint'),
+                resolvePluginsRelativeTo: __dirname,
+              },
+              loader: require.resolve('eslint-loader'),
+            },
+          ],
+          include: paths.appSrc,
+        },
+
+        {
           oneOf: [
             {
               test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.webp$/],
@@ -224,6 +240,25 @@ const configFactory = env => {
                       require('stylelint')(),
                     ],
                     sourceMap: isEnvProduction,
+                  },
+                },
+                {
+                  loader: require.resolve('sass-resources-loader'),
+                  options: {
+                    resources: [
+                      path.resolve(
+                        __dirname,
+                        '../src/assets/styles/_variables.scss',
+                      ),
+                      path.resolve(
+                        __dirname,
+                        '../src/assets/styles/_functions.scss',
+                      ),
+                      path.resolve(
+                        __dirname,
+                        '../src/assets/styles/_mixins.scss',
+                      ),
+                    ],
                   },
                 },
               ],
