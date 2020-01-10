@@ -9,6 +9,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const cssRegex = /\.css$/
 const cssModuleRegex = /\.module\.css$/
@@ -308,6 +309,8 @@ const configFactory = env => {
         filename: 'static/css/[name].[contenthash:8].css',
         chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
       }),
+
+      new FriendlyErrorsWebpackPlugin(),
 
       new CopyWebpackPlugin([
         {
