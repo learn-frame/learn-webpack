@@ -60,7 +60,7 @@ const configFactory = env => {
         {
           oneOf: [
             {
-              test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+              test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.webp$/],
               loader: require.resolve('url-loader'),
               options: {
                 limit: 10000,
