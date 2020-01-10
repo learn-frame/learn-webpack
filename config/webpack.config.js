@@ -79,6 +79,12 @@ const configFactory = env => {
             },
 
             {
+              test: /\.(graphql|gql)$/,
+              exclude: /node_modules/,
+              loader: require.resolve('graphql-tag/loader'),
+            },
+
+            {
               test: cssRegex,
               exclude: cssModuleRegex,
               use: [
