@@ -47,3 +47,7 @@ module.exports = {
   },
 }
 ```
+
+## tree shaking
+
+只有编译的模块是 ES6+, 如果是一个方法, 且该方法没有副作用, 才有可能会被 tree shaking.
