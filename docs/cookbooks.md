@@ -51,3 +51,33 @@ module.exports = {
 ## tree shaking
 
 只有编译的模块是 ES6+, 如果是一个方法, 且该方法没有副作用, 才有可能会被 tree shaking.
+
+## 打包库
+
+对于库的打包可以参考如下配置, 并且记得要配置 package.json 里的 main 字段.
+
+```ts
+module.exports = {
+  mode: 'none',
+  entry: {
+    'large-number.prod': './src/index.js',
+    'large-number.prod.min': './src/index.js',
+  },
+  output: {
+    filename: '[name].js',
+    library: 'largeNumber',
+    libraryTarget: 'umd',
+    libraryExport: 'default',
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TererPlugin({
+        include: /\.min\.js$/,
+      }),
+    ],
+  },
+}
+```
+
+我选择 rollup.

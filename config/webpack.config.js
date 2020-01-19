@@ -390,6 +390,8 @@ const configFactory = env => {
       'react-dom': 'ReactDOM',
     },
 
+    stats: 'minimal',
+
     profile: true,
   }
 }
