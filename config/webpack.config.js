@@ -24,7 +24,7 @@ const configFactory = env => {
     mode: env,
 
     entry: {
-      app: './src/app.tsx',
+      app: './src/index.tsx',
     },
 
     output: {
@@ -57,21 +57,21 @@ const configFactory = env => {
           parser: { requireEnsure: false },
         },
 
-        // {
-        //   test: /\.(js|mjs|jsx|ts|tsx)$/,
-        //   enforce: 'pre',
-        //   use: [
-        //     {
-        //       options: {
-        //         cache: true,
-        //         eslintPath: require.resolve('eslint'),
-        //         resolvePluginsRelativeTo: __dirname,
-        //       },
-        //       loader: require.resolve('eslint-loader'),
-        //     },
-        //   ],
-        //   include: paths.appSrc,
-        // },
+        {
+          test: /\.(js|mjs|jsx|ts|tsx)$/,
+          enforce: 'pre',
+          use: [
+            {
+              options: {
+                cache: true,
+                eslintPath: require.resolve('eslint'),
+                resolvePluginsRelativeTo: __dirname,
+              },
+              loader: require.resolve('eslint-loader'),
+            },
+          ],
+          include: paths.appSrc,
+        },
 
         {
           oneOf: [
