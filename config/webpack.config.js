@@ -10,6 +10,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin
 
@@ -371,6 +372,8 @@ const configFactory = env => {
       isEnvProduction && new ManifestPlugin(),
 
       isEnvProduction && new BundleAnalyzerPlugin(),
+
+      isEnvProduction && new HardSourceWebpackPlugin(),
 
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
 
