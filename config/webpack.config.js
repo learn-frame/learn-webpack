@@ -10,7 +10,8 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin
 
 const cssRegex = /\.css$/
 const cssModuleRegex = /\.module\.css$/
@@ -88,12 +89,22 @@ const configFactory = env => {
             {
               test: /\.tsx?$/,
               include: paths.srcPath,
-              loader: 'ts-loader',
-              options: {
-                transpileOnly: true,
-                experimentalWatchApi: true,
-              },
               exclude: /node_modules/,
+              use: [
+                {
+                  loader: require.resolve('thread-loader'),
+                  options: {
+                    workers: 3,
+                  },
+                },
+                {
+                  loader: require.resolve('ts-loader'),
+                  options: {
+                    transpileOnly: true,
+                    experimentalWatchApi: true,
+                  },
+                },
+              ],
             },
 
             {
