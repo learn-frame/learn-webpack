@@ -2,9 +2,6 @@
 
 这里记录一些 webpack 的技巧和注意事项.
 
-- [StatsPlugin](#statsplugin)
-- [loader 书写顺序](#loader-%E4%B9%A6%E5%86%99%E9%A1%BA%E5%BA%8F)
-
 ## StatsPlugin
 
 ```ts
