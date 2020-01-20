@@ -113,3 +113,7 @@ webpack 4 内置了 terser-webpack-plugin, 开启 parallel 参数即可享受并
 ### purgecss-webpack-plugin
 
 可以清除没有用到的 css 样式.
+
+### image-webpack-loader
+
+可以用于图片的压缩, 当然我选择云厂商的服务
