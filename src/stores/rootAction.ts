@@ -1,1 +1,3 @@
-export default {}
+import addActions from './AddAndSubtract/actions'
+
+export default { addActions }

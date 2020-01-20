@@ -1,15 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ESNext",
     "module": "ESNext",
-    "lib": [
-      "dom",
-      "es5",
-      "scripthost",
-      "es2015.promise",
-      "dom.iterable",
-      "esnext"
-    ],
     "jsx": "react",
     "outDir": "./dist",
     "rootDir": "./src",

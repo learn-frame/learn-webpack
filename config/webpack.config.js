@@ -1,6 +1,5 @@
 const paths = require('./paths')
 const path = require('path')
-const glob = require('glob')
 const Fiber = require('fibers')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
