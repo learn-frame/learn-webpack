@@ -92,16 +92,16 @@ const configFactory = env => {
               exclude: /node_modules/,
               use: [
                 {
-                  loader: require.resolve('thread-loader'),
-                  options: {
-                    workers: 3,
-                  },
-                },
-                {
                   loader: require.resolve('ts-loader'),
                   options: {
                     transpileOnly: true,
                     experimentalWatchApi: true,
+                  },
+                },
+                {
+                  loader: require.resolve('thread-loader'),
+                  options: {
+                    workers: 3,
                   },
                 },
               ],
@@ -312,7 +312,7 @@ const configFactory = env => {
               ascii_only: true,
             },
           },
-          parallel: true,
+          parallel: true, // 并行压缩
           cache: true,
           sourceMap: true,
         }),
