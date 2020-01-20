@@ -117,3 +117,7 @@ webpack 4 内置了 terser-webpack-plugin, 开启 parallel 参数即可享受并
 ### image-webpack-loader
 
 可以用于图片的压缩, 当然我选择云厂商的服务
+
+## dll 分包
+
+![dll 分包](./images/dll-plugin.jpg)

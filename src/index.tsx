@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
 import moment from 'moment'
 import styles from './assets/styles/index.module.scss'
+import configureStore from './stores/configureStore'
+
+const store = configureStore()
 
 const Hello = () => {
   const [now, setNow] = useState('')
@@ -13,9 +17,11 @@ const Hello = () => {
     }, 1000)
   }, [now])
   return (
-    <BrowserRouter>
-      <div className={styles.hello}>{now}</div>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <div className={styles.hello}>{now}</div>
+      </BrowserRouter>
+    </Provider>
   )
 }
 
