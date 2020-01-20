@@ -1,7 +1,6 @@
 const paths = require('./paths')
 const path = require('path')
 const glob = require('glob')
-const PurgecssPlugin = require('purgecss-webpack-plugin')
 const Fiber = require('fibers')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -70,7 +69,6 @@ const configFactory = env => {
               options: {
                 cache: true,
                 eslintPath: require.resolve('eslint'),
-                resolvePluginsRelativeTo: __dirname,
               },
               loader: require.resolve('eslint-loader'),
             },
@@ -358,10 +356,6 @@ const configFactory = env => {
       new MiniCssExtractPlugin({
         filename: 'static/css/[name].[contenthash:8].css',
         chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
-      }),
-
-      new PurgecssPlugin({
-        paths: glob.sync(`${path.srcPath}/**/*`, { nodir: true }),
       }),
 
       new FriendlyErrorsWebpackPlugin(),
