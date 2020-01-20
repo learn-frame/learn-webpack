@@ -10,7 +10,13 @@ Learn webpack with GeekTime course and other courses.
 
 - [Cookbooks](./docs/cookbooks.md)
 
-- [webpack.config.ts 配置一览](./config/webpack.config.ts)
+- [HMR 小谈](./docs/hmr.md)
+
+- [webpack.config.ts 经典配置](./config/webpack.config.ts)
+
+## Loader & Plugin Demos
+
+- [raw-loader](./libs/loaders/raw-loader.js)
 
 ## License
 
