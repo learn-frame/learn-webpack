@@ -2,8 +2,11 @@ const webpack = require('webpack')
 const fs = require('fs-extra')
 const configFactory = require('../config/webpack.config')
 const paths = require('../config/paths')
+const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
 
-const config = configFactory('production')
+const smp = new SpeedMeasureWebpackPlugin()
+
+const config = smp.wrap(configFactory('production'))
 
 async function build() {
   console.log('Creating an optimized production build...')
