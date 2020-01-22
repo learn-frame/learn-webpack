@@ -108,6 +108,15 @@ const configFactory = env => {
             },
 
             {
+              test: /\.txt$/,
+              exclude: /node_modules/,
+              loader: 'txt-loader',
+              options: {
+                name: 'static/media/[name].[hash:8].[ext]',
+              },
+            },
+
+            {
               test: /\.(graphql|gql)$/,
               exclude: /node_modules/,
               loader: require.resolve('graphql-tag/loader'),
@@ -286,6 +295,11 @@ const configFactory = env => {
           ],
         },
       ],
+    },
+
+    resolveLoader: {
+      // 加载本地的 loader
+      modules: ['node_modules', './libs/loaders/'],
     },
 
     optimization: {
