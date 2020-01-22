@@ -390,7 +390,7 @@ const configFactory = env => {
 
       isEnvProduction &&
         new ZipWebpackPlugin({
-          filename: 'offline',
+          filename: 'offline.zip',
         }),
 
       isEnvProduction && new ManifestPlugin(),

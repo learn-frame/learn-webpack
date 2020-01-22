@@ -1,6 +1,6 @@
 const JSZip = require('jszip')
 const path = require('path')
-const RowSource = require('')
+const RawSource = require('webpack-sources').RawSource
 const zip = new JSZip()
 
 class ZipWebpackPlugin {
@@ -11,7 +11,7 @@ class ZipWebpackPlugin {
   apply(compiler) {
     compiler.hooks.emit.tapAsync(
       'ZipWebpackPlugin',
-      async (compilation, callback) => {
+      (compilation, callback) => {
         const folder = zip.folder(this.options.filename)
 
         for (let filename in compilation.assets) {
@@ -19,16 +19,25 @@ class ZipWebpackPlugin {
           folder.file(filename, source)
         }
 
-        const res = await zip.generateAsync({
-          type: 'nodebuffer',
-        })
+        zip
+          .generateAsync({
+            type: 'nodebuffer',
+          })
+          .then(res => {
+            const outputPath = path.join(
+              compilation.options.output.path,
+              this.options.filename,
+            )
 
-        const outputPath = path.join(
-          compilation.options.outputPath.path,
-          this.options.filename + '.zip',
-        )
+            const outputRelativePath = path.relative(
+              compilation.options.output.path,
+              outputPath,
+            )
 
-        compilation.assets
+            compilation.assets[outputRelativePath] = new RawSource(res)
+
+            callback()
+          })
       },
     )
   }
