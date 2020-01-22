@@ -16,7 +16,9 @@ Learn webpack with GeekTime course and other courses.
 
 ## Loader & Plugin Demos
 
-- [raw-loader](./libs/loaders/raw-loader.js)
+- [txt-loader](./libs/loaders/txt-loader)
+
+- [zip-webpack-plugin](./libs/plugins/zip-webpack-plugin)
 
 ## License
 

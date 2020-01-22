@@ -1,4 +1,4 @@
-class MyPlugin {
+class ZipWebpackPlugin {
   constructor(options) {
     this.options = options
   }
@@ -8,4 +8,4 @@ class MyPlugin {
   }
 }
 
-module.exports = MyPlugin
+module.exports = ZipWebpackPlugin
