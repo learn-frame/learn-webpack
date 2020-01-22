@@ -3,6 +3,7 @@ const path = require('path')
 const Fiber = require('fibers')
 const webpack = require('webpack')
 const FileListWebpackPlugin = require('../libs/plugins/file-list-webpack-plugin/file-list-webpack-plugin')
+const ZipWebpackPlugin = require('../libs/plugins/zip-webpack-plugin/zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
@@ -386,6 +387,11 @@ const configFactory = env => {
 
       // 自己写的 plugin!!!
       isEnvProduction && new FileListWebpackPlugin(),
+
+      isEnvProduction &&
+        new ZipWebpackPlugin({
+          filename: 'offline',
+        }),
 
       isEnvProduction && new ManifestPlugin(),
 
