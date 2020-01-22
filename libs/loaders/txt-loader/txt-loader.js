@@ -1,13 +1,11 @@
 const loaderUtils = require('loader-utils')
-const path = require('path')
-const process = require('process')
 const validateOptions = require('schema-utils')
-
 const schema = require('./options.json')
 
 module.exports = function(source) {
   validateOptions(schema, options, {
     name: 'Txt Loader',
+    baseDataPath: 'options',
   })
 
   if (!this.emitFile)

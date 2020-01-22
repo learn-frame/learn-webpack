@@ -301,7 +301,7 @@ const configFactory = env => {
 
     resolveLoader: {
       // 加载本地的 loader
-      modules: ['node_modules', './libs/loaders/'],
+      modules: ['node_modules', './libs/loaders/txt-loader'],
     },
 
     optimization: {

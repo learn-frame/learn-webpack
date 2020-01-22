@@ -5,14 +5,14 @@ import { Provider } from 'react-redux'
 import moment from 'moment'
 import styles from './assets/styles/index.module.scss'
 import configureStore from './stores/configureStore'
-import txt from './assets/texts/demo.txt'
+// import txt from './assets/texts/demo.txt'
 
 const store = configureStore()
 
 const Hello = () => {
   const [now, setNow] = useState('')
 
-  console.log(txt)
+  // console.log(txt)
 
   useEffect(() => {
     setInterval(() => {
