@@ -12,6 +12,8 @@ Learn webpack with GeekTime course and other courses.
 
 - [HMR 小谈](./docs/hmr.md)
 
+- [构建优化篇](./docs/build-optimization.md)
+
 - [webpack.config.ts 经典配置](./config/webpack.config.ts)
 
 ## Loader & Plugin Demos
