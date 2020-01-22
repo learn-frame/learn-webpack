@@ -18,7 +18,11 @@ Learn webpack with GeekTime course and other courses.
 
 - [txt-loader](./libs/loaders/txt-loader)
 
+- [remove-console-loader](./libs/loaders/remove-console-loader)
+
 - [zip-webpack-plugin](./libs/plugins/zip-webpack-plugin)
+
+- [file-list-webpack-plugin](./libs/plugins/file-list-webpack-plugin)
 
 ## License
 

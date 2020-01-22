@@ -1,11 +1,11 @@
-class ZipWebpackPlugin {
+class FileListWebpackPlugin {
   constructor(options) {
     this.options = options
   }
 
   apply(compiler) {
     compiler.hooks.emit.tapAsync(
-      'ZipWebpackPlugin',
+      'FileListWebpackPlugin',
       (compilation, callback) => {
         let filelist = '# File List\n\n'
 
@@ -28,4 +28,4 @@ class ZipWebpackPlugin {
   }
 }
 
-module.exports = ZipWebpackPlugin
+module.exports = FileListWebpackPlugin

@@ -2,7 +2,7 @@ const paths = require('./paths')
 const path = require('path')
 const Fiber = require('fibers')
 const webpack = require('webpack')
-const MyPlugin = require('../libs/plugins/zip-webpack-plugin')
+const FileListWebpackPlugin = require('../libs/plugins/file-list-webpack-plugin/file-list-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
@@ -385,7 +385,7 @@ const configFactory = env => {
       new ForkTsCheckerWebpackPlugin(),
 
       // 自己写的 plugin!!!
-      isEnvProduction && new MyPlugin(),
+      isEnvProduction && new FileListWebpackPlugin(),
 
       isEnvProduction && new ManifestPlugin(),
 
