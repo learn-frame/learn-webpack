@@ -107,6 +107,7 @@ const configFactory = env => {
               ],
             },
 
+            // 自己写的 loader!!!
             {
               test: /\.txt$/,
               exclude: /node_modules/,
