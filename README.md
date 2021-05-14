@@ -16,7 +16,7 @@ Learn webpack with GeekTime course and other courses.
 
 - [webpack.config.js 经典配置](./config/webpack.config.js)
 
-- [wepack 配置学习](./config/webpack.learn.js)
+- [wepack 配置学习](./config/webpack.learning.js)
 
 ## Loader & Plugin Demos
 
