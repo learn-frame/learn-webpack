@@ -14,7 +14,9 @@ Learn webpack with GeekTime course and other courses.
 
 - [构建优化篇](./docs/build-optimization.md)
 
-- [webpack.config.ts 经典配置](./config/webpack.config.js)
+- [webpack.config.js 经典配置](./config/webpack.config.js)
+
+- [wepack 配置学习](./config/webpack.learn.js)
 
 ## Loader & Plugin Demos
 
