@@ -18,6 +18,8 @@ Learn webpack with GeekTime course and other courses.
 
 - [wepack 配置学习](./config/webpack.learning.js)
 
+- (TODO:) Tree shaking 原理
+
 ## Loader & Plugin Demos
 
 - [txt-loader](./libs/loaders/txt-loader)
