@@ -1,0 +1,17 @@
+$vw_fontSize: 75;
+
+@function rem($px) {
+  @return ($px / $vw_fontSize) * 1rem;
+}
+
+html {
+  font-size: 20vw;
+
+  @media screen and (max-width: 320px) {
+    font-size: 64px;
+  }
+
+  @media screen and (min-width: 540px) {
+    font-size: 108px;
+  }
+}

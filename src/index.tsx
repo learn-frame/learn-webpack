@@ -23,6 +23,7 @@ const Hello = () => {
     <Provider store={store}>
       <BrowserRouter>
         <div className={styles.hello}>{now}</div>
+        <div className={styles.bg} />
       </BrowserRouter>
     </Provider>
   )

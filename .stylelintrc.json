@@ -1,4 +1,11 @@
 {
-  "extends": "stylelint-config-recommended-scss",
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recommended",
+    "stylelint-config-sass-guidelines"
+  ],
+  "plugins": [
+    "stylelint-scss"
+  ],
   "rules": {}
 }

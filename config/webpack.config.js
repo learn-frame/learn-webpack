@@ -2,26 +2,30 @@ const paths = require('./paths')
 const path = require('path')
 const Fiber = require('fibers')
 const webpack = require('webpack')
+const {
+  setStyleLoaderOrMiniCssExtractPluginLoder,
+  setCssLoader,
+  setPostCssLoader,
+  setSassLoader,
+} = require('./stylesheet.loader')
 const FileListWebpackPlugin = require('../libs/plugins/file-list-webpack-plugin/file-list-webpack-plugin')
 const ZipWebpackPlugin = require('../libs/plugins/zip-webpack-plugin/zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const ManifestPlugin = require('webpack-manifest-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const cssRegex = /\.css$/
 const cssModuleRegex = /\.module\.css$/
-const sassRegex = /\.(scss|sass)$/
-const sassModuleRegex = /\.module\.(scss|sass)$/
+const sassRegex = /\.(s(a|c)ss)$/
+const sassModuleRegex = /\.module\.(s(a|c)ss)$/
 
-const configFactory = env => {
+const configFactory = (env) => {
   const isEnvDevelopment = env === 'development'
   const isEnvProduction = env === 'production'
 
@@ -32,6 +36,8 @@ const configFactory = env => {
       app: './src/index.tsx',
     },
 
+    target: ['web', 'es5'],
+
     output: {
       path: isEnvProduction ? paths.distPath : undefined,
 
@@ -39,11 +45,12 @@ const configFactory = env => {
 
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].js'
-        : 'static/js/bundle.js',
+        : 'static/js/[name].bundle.js',
 
       chunkFilename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].chunk.js'
         : 'static/js/[name].chunk.js',
+
     },
 
     resolve: {
@@ -129,28 +136,9 @@ const configFactory = env => {
               test: cssRegex,
               exclude: cssModuleRegex,
               use: [
-                {
-                  loader: MiniCssExtractPlugin.loader,
-                  options: { publicPath: '../../' },
-                },
-                {
-                  loader: require.resolve('css-loader'),
-                  options: {
-                    importLoaders: 1,
-                    sourceMap: isEnvProduction,
-                  },
-                },
-                {
-                  loader: require.resolve('postcss-loader'),
-                  options: {
-                    ident: 'postcss',
-                    plugins: () => [
-                      require('postcss-preset-env')(),
-                      require('stylelint')(),
-                    ],
-                    sourceMap: isEnvProduction,
-                  },
-                },
+                setStyleLoaderOrMiniCssExtractPluginLoder(isEnvProduction),
+                setCssLoader(isEnvProduction, false, 1),
+                setPostCssLoader(),
               ],
               sideEffects: true,
             },
@@ -158,33 +146,9 @@ const configFactory = env => {
             {
               test: cssModuleRegex,
               use: [
-                {
-                  loader: MiniCssExtractPlugin.loader,
-                  options: { publicPath: '../../' },
-                },
-                {
-                  loader: require.resolve('css-loader'),
-                  options: {
-                    importLoaders: 1,
-                    sourceMap: isEnvProduction,
-                    modules: {
-                      localIdentName: isEnvProduction
-                        ? '[hash:base64:6]'
-                        : '[path][name]__[local]',
-                    },
-                  },
-                },
-                {
-                  loader: require.resolve('postcss-loader'),
-                  options: {
-                    ident: 'postcss',
-                    plugins: () => [
-                      require('postcss-preset-env')(),
-                      require('stylelint')(),
-                    ],
-                    sourceMap: isEnvProduction,
-                  },
-                },
+                setStyleLoaderOrMiniCssExtractPluginLoder(isEnvProduction),
+                setCssLoader(isEnvProduction, true, 1),
+                setPostCssLoader(),
               ],
             },
 
@@ -192,37 +156,10 @@ const configFactory = env => {
               test: sassRegex,
               exclude: sassModuleRegex,
               use: [
-                {
-                  loader: MiniCssExtractPlugin.loader,
-                  options: { publicPath: '../../' },
-                },
-                {
-                  loader: require.resolve('css-loader'),
-                  options: {
-                    importLoaders: 2,
-                    sourceMap: isEnvProduction,
-                  },
-                },
-                {
-                  loader: require.resolve('sass-loader'),
-                  options: {
-                    implementation: require('sass'),
-                    sassOptions: {
-                      fiber: Fiber,
-                    },
-                  },
-                },
-                {
-                  loader: require.resolve('postcss-loader'),
-                  options: {
-                    ident: 'postcss',
-                    plugins: () => [
-                      require('postcss-preset-env')(),
-                      require('stylelint')(),
-                    ],
-                    sourceMap: isEnvProduction,
-                  },
-                },
+                setStyleLoaderOrMiniCssExtractPluginLoder(isEnvProduction),
+                setCssLoader(isEnvProduction, false, 2),
+                setPostCssLoader(),
+                setSassLoader(),
               ],
               sideEffects: true,
             },
@@ -230,42 +167,10 @@ const configFactory = env => {
             {
               test: sassModuleRegex,
               use: [
-                {
-                  loader: MiniCssExtractPlugin.loader,
-                  options: { publicPath: '../../' },
-                },
-                {
-                  loader: require.resolve('css-loader'),
-                  options: {
-                    importLoaders: 2,
-                    sourceMap: isEnvProduction,
-                    modules: {
-                      localIdentName: isEnvProduction
-                        ? '[hash:base64:6]'
-                        : '[path][name]__[local]',
-                    },
-                  },
-                },
-                {
-                  loader: require.resolve('sass-loader'),
-                  options: {
-                    implementation: require('sass'),
-                    sassOptions: {
-                      fiber: Fiber,
-                    },
-                  },
-                },
-                {
-                  loader: require.resolve('postcss-loader'),
-                  options: {
-                    ident: 'postcss',
-                    plugins: () => [
-                      require('postcss-preset-env')(),
-                      require('stylelint')(),
-                    ],
-                    sourceMap: isEnvProduction,
-                  },
-                },
+                setStyleLoaderOrMiniCssExtractPluginLoder(isEnvProduction),
+                setCssLoader(isEnvProduction, true, 2),
+                setPostCssLoader(),
+                setSassLoader(),
                 {
                   loader: require.resolve('sass-resources-loader'),
                   options: {
@@ -309,37 +214,43 @@ const configFactory = env => {
       minimize: isEnvProduction,
 
       minimizer: [
-        new TerserPlugin({
-          terserOptions: {
-            parse: {
-              ecma: 8,
-            },
-            compress: {
-              ecma: 5,
-              warnings: false,
-              comparisons: false,
-              inline: 2,
-            },
-            mangle: {
-              safari10: true,
-            },
-            output: {
-              ecma: 5,
-              comments: false,
-              ascii_only: true,
-            },
-          },
-          parallel: true, // 并行压缩
-          cache: true,
-          sourceMap: true,
-        }),
+        () => {
+          return () => {
+            return {
+              terserOptions: {
+                parse: {
+                  ecma: 8,
+                },
+                compress: {
+                  ecma: 5,
+                  warnings: false,
+                  comparisons: false,
+                  inline: 2,
+                },
+                mangle: {
+                  safari10: true,
+                },
+                output: {
+                  ecma: 5,
+                  comments: false,
+                  ascii_only: true,
+                },
+              },
+              sourceMap: true,
+              parallel: true, // 并行压缩
+            }
+          }
+        },
 
-        new OptimizeCSSAssetsPlugin({
-          cssProcessorOptions: {
-            map: {
-              inline: false,
-              annotation: true,
-            },
+        new CssMinimizerPlugin({
+          parallel: true,
+          minimizerOptions: {
+            preset: [
+              'default',
+              {
+                discardComments: { removeAll: true },
+              },
+            ],
           },
         }),
       ],
@@ -369,41 +280,47 @@ const configFactory = env => {
         },
       }),
 
-      new MiniCssExtractPlugin({
-        filename: 'static/css/[name].[contenthash:8].css',
-        chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
-      }),
+      isEnvProduction &&
+        new MiniCssExtractPlugin({
+          filename: 'static/css/[contenthash:8].css',
+          chunkFilename: 'static/css/[contenthash:8].chunk.css',
+        }),
 
       new FriendlyErrorsWebpackPlugin(),
 
-      new CopyWebpackPlugin([
-        {
-          from: paths.publicPath,
-          to: paths.distPath,
-        },
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: paths.publicPath,
+            to: paths.distPath,
+            filter: (resourcePath) => !resourcePath.includes('index.html'),
+          },
+        ],
+      }),
 
       new ForkTsCheckerWebpackPlugin(),
 
       // 自己写的 plugin!!!
       isEnvProduction && new FileListWebpackPlugin(),
 
+      // 自己写的 plugin!!!
       isEnvProduction &&
         new ZipWebpackPlugin({
           filename: 'offline.zip',
         }),
 
-      isEnvProduction && new ManifestPlugin(),
+      isEnvProduction && new WebpackManifestPlugin(),
 
       isEnvProduction && new BundleAnalyzerPlugin(),
-
-      isEnvProduction && new HardSourceWebpackPlugin(),
 
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
 
       new webpack.ProgressPlugin(),
 
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/,
+      }),
     ].filter(Boolean),
 
     devServer: isEnvDevelopment
@@ -424,7 +341,7 @@ const configFactory = env => {
         }
       : undefined,
 
-    devtool: isEnvProduction ? 'source-map' : 'cheap-module-eval-source-map',
+    devtool: isEnvProduction ? 'source-map' : 'eval-cheap-module-source-map',
 
     externals: {
       react: 'React',
