@@ -1,3 +1,5 @@
+/* 仅供学习参考, 不能用作生产环境啊喂!!! */
+
 const path = require('path')
 const glob = require('glob')
 const webpack = require('webpack')

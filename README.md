@@ -14,7 +14,11 @@ Learn webpack with GeekTime course and other courses.
 
 - [构建优化篇](./docs/build-optimization.md)
 
-- [webpack.config.ts 经典配置](./config/webpack.config.ts)
+- [webpack.config.js 经典配置](./config/webpack.config.js)
+
+- [wepack 配置学习](./config/webpack.learning.js)
+
+- (TODO:) Tree shaking 原理
 
 ## Loader & Plugin Demos
 
