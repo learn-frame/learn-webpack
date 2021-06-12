@@ -10,6 +10,7 @@ const {
 } = require('./stylesheet.loader')
 const FileListWebpackPlugin = require('../libs/plugins/file-list-webpack-plugin/file-list-webpack-plugin')
 const ZipWebpackPlugin = require('../libs/plugins/zip-webpack-plugin/zip-webpack-plugin')
+const ESLintPlugin = require('eslint-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
@@ -50,7 +51,6 @@ const configFactory = (env) => {
       chunkFilename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].chunk.js'
         : 'static/js/[name].chunk.js',
-
     },
 
     resolve: {
@@ -69,20 +69,12 @@ const configFactory = (env) => {
           parser: { requireEnsure: false },
         },
 
-        {
-          test: /\.(js|mjs|jsx|ts|tsx)$/,
+        /* shouldUseSourceMap && {
           enforce: 'pre',
-          use: [
-            {
-              options: {
-                cache: true,
-                eslintPath: require.resolve('eslint'),
-              },
-              loader: require.resolve('eslint-loader'),
-            },
-          ],
-          include: paths.appSrc,
-        },
+          exclude: /@babel(?:\/|\\{1,2})runtime/,
+          test: /\.(js|mjs|jsx|ts|tsx|css)$/,
+          use: 'source-map-loader',
+        }, */
 
         {
           oneOf: [
@@ -287,6 +279,8 @@ const configFactory = (env) => {
         }),
 
       new FriendlyErrorsWebpackPlugin(),
+
+      new ESLintPlugin(),
 
       new CopyWebpackPlugin({
         patterns: [

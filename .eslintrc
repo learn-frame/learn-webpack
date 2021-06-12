@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "extends": "airbnb",
   "env": {
     "node": true,
@@ -11,5 +11,6 @@
     "import/extensions":"off",
     "import/no-unresolved":"off",
     "react/jsx-filename-extension": "off"
-  }
+  },
+  "requireConfigFile": false
 }
