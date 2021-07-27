@@ -1,6 +1,5 @@
 const paths = require('./paths')
 const path = require('path')
-const Fiber = require('fibers')
 const webpack = require('webpack')
 const {
   setStyleLoaderOrMiniCssExtractPluginLoder,
@@ -68,13 +67,6 @@ const configFactory = (env) => {
         {
           parser: { requireEnsure: false },
         },
-
-        /* shouldUseSourceMap && {
-          enforce: 'pre',
-          exclude: /@babel(?:\/|\\{1,2})runtime/,
-          test: /\.(js|mjs|jsx|ts|tsx|css)$/,
-          use: 'source-map-loader',
-        }, */
 
         {
           oneOf: [
