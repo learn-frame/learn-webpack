@@ -65,17 +65,17 @@ const configFactory = (env) => {
 
       rules: [
         {
-          parser: { requireEnsure: false },
-        },
-
-        {
           oneOf: [
             {
               test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.webp$/],
-              loader: require.resolve('url-loader'),
-              options: {
-                limit: 10000,
-                name: 'static/media/[name].[emoji].[hash:8].[ext]',
+              type: 'asset',
+              generator: {
+                filename: 'static/media/[name].[emoji].[hash:8].[ext]',
+              },
+              parser: {
+                dataUrlCondition: {
+                  maxSize: 4 * 1024,
+                },
               },
             },
 
@@ -175,14 +175,6 @@ const configFactory = (env) => {
                   },
                 },
               ],
-            },
-
-            {
-              loader: require.resolve('file-loader'),
-              exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
-              options: {
-                name: 'static/media/[name].[hash:8].[ext]',
-              },
             },
           ],
         },

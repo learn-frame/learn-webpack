@@ -1,8 +1,13 @@
-import React, { FC } from 'react'
-import ReactDOM from 'react-dom'
+import React, { FC, ReactNode } from 'react'
+import ReactDOM from 'react-dom/client'
 
-export const Button: FC = ({ children }) => {
+interface Props {
+  children: ReactNode
+}
+
+export const Button: FC<Props> = ({ children }) => {
   return <button>{children}</button>
 }
 
-ReactDOM.render(<Button>hello</Button>, document.getElementById('app'))
+const $rootEl = document.getElementById('app') as HTMLElement
+ReactDOM.createRoot($rootEl).render(<Button>hello</Button>)

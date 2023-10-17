@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import ReactDOM from 'react-dom/client'
 import moment from 'moment'
+import Img from './assets/images/picha.jpg'
 import styles from './assets/styles/index.module.scss'
-import configureStore from './stores/configureStore'
 // import txt from './assets/texts/demo.txt'
 
-const store = configureStore()
-
-const Hello = () => {
+const App = () => {
   const [now, setNow] = useState('')
 
   // console.log(txt)
@@ -20,13 +16,13 @@ const Hello = () => {
     }, 1000)
   }, [now])
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <div className={styles.hello}>{now}</div>
-        <div className={styles.bg} />
-      </BrowserRouter>
-    </Provider>
+    <section>
+      <div className={styles.hello}>{now}</div>
+      <div className={styles.bg} />
+      <img src={Img} alt='' />
+    </section>
   )
 }
 
-ReactDOM.render(<Hello />, document.getElementById('app'))
+const $rootEl = document.getElementById('app') as HTMLElement
+ReactDOM.createRoot($rootEl).render(<App />)
