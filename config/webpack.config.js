@@ -70,7 +70,7 @@ const configFactory = (env) => {
               test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.webp$/],
               type: 'asset',
               generator: {
-                filename: 'static/media/[name].[emoji].[hash:8].[ext]',
+                filename: 'static/media/[name].[contenthash:8][ext]',
               },
               parser: {
                 dataUrlCondition: {
@@ -106,7 +106,7 @@ const configFactory = (env) => {
               exclude: /node_modules/,
               loader: 'txt-loader',
               options: {
-                name: 'static/media/[name].[hash:8].[ext]',
+                name: 'static/media/[name].[contenthash:8][ext]',
               },
             },
 
