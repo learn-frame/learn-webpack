@@ -1,9 +1,12 @@
 const loaderUtils = require('loader-utils')
-const validateOptions = require('schema-utils')
+const { validate } = require('schema-utils')
 const schema = require('./options.json')
 
-module.exports = function(source) {
-  validateOptions(schema, options, {
+module.exports = function (source) {
+  // 通过 this.getOptions 方法获取 options 中的参数
+  const options = this.getOptions() || {}
+
+  validate(schema, options, {
     name: 'Txt Loader',
     baseDataPath: 'options',
   })
@@ -11,14 +14,11 @@ module.exports = function(source) {
   if (!this.emitFile)
     throw new Error('Txt Loader\n\nemitFile is required from module system')
 
-  // 通过 loaderUtils.getOptions 方法获取 options 中的参数
-  const { name } = loaderUtils.getOptions(this) || {}
-
   const result = JSON.stringify(source)
     .replace(/\u2028/g, '\\u2028')
     .replace(/\u2029/g, '\\u2029')
 
-  const url = loaderUtils.interpolateName(this, name, {
+  const url = loaderUtils.interpolateName(this, options.name, {
     result,
   })
 

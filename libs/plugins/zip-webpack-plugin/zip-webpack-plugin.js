@@ -9,9 +9,9 @@ class ZipWebpackPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.emit.tapAsync(
+    compiler.hooks.compilation.tap(
       'ZipWebpackPlugin',
-      (compilation, callback) => {
+      (compilation, compilationParams) => {
         const folder = zip.folder(this.options.filename)
 
         for (let filename in compilation.assets) {
@@ -35,8 +35,6 @@ class ZipWebpackPlugin {
             )
 
             compilation.assets[outputRelativePath] = new RawSource(res)
-
-            callback()
           })
       },
     )

@@ -1,3 +1,4 @@
+// babel 三套件: 解析 -> 转换 -> 生成
 const parser = require('@babel/parser')
 const traverse = require('@babel/traverse').default
 const generator = require('@babel/generator').default

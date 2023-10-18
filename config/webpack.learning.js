@@ -173,10 +173,6 @@ const configFactory = env => {
         },
       ]),
 
-      // new MomentLocalesPlugin({
-      //   localesToKeep: ['es-US', 'zh-CN'],
-      // }),
-
       new webpack.ProgressPlugin(),
 
       new webpack.BannerPlugin({

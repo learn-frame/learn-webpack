@@ -4,9 +4,9 @@ class FileListWebpackPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.emit.tapAsync(
+    compiler.hooks.compilation.tap(
       'FileListWebpackPlugin',
-      (compilation, callback) => {
+      (compilation, compilationParams) => {
         let filelist = '# File List\n\n'
 
         for (const filename in compilation.assets) {
@@ -21,8 +21,6 @@ class FileListWebpackPlugin {
             return filelist.length
           },
         }
-
-        callback()
       },
     )
   }

@@ -106,7 +106,7 @@ const configFactory = (env) => {
               exclude: /node_modules/,
               loader: 'txt-loader',
               options: {
-                name: 'static/media/[name].[contenthash:8][ext]',
+                name: 'static/media/[name].[hash:8].[ext]',
               },
             },
 
@@ -258,8 +258,8 @@ const configFactory = (env) => {
 
       isEnvProduction &&
         new MiniCssExtractPlugin({
-          filename: 'static/css/[contenthash:8].css',
-          chunkFilename: 'static/css/[contenthash:8].chunk.css',
+          filename: 'static/css/[name].[contenthash:8].css',
+          chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
         }),
 
       new FriendlyErrorsWebpackPlugin(),
@@ -276,6 +276,7 @@ const configFactory = (env) => {
         ],
       }),
 
+      // 在 Webpack 编译过程中运行, 可以帮助您捕获类型错误
       new ForkTsCheckerWebpackPlugin(),
 
       // 自己写的 plugin!!!

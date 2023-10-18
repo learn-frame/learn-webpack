@@ -2,8 +2,6 @@ const webpack = require('webpack')
 const fs = require('fs-extra')
 const configFactory = require('../config/webpack.config')
 const paths = require('../config/paths')
-
-
 const config = configFactory('production')
 
 async function build() {
