@@ -9,9 +9,9 @@ async function start() {
 
   const compiler = webpack(config)
 
-  const devServer = new WebpackDevServer(compiler)
+  const devServer = new WebpackDevServer({}, compiler)
 
-  devServer.listen(3000, 'localhost', err => {
+  devServer.start(3000, 'localhost', (err) => {
     if (err) {
       return console.log(err)
     }

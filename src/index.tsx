@@ -8,6 +8,7 @@ import styles from './assets/styles/index.module.scss'
 
 const App = () => {
   const [now, setNow] = useState('')
+  const [num, setNum] = useState(0)
   // console.log(txt)
 
   useEffect(() => {
@@ -17,10 +18,11 @@ const App = () => {
   }, [now])
   return (
     <section>
-      <div className={styles.hello}>{now}</div>
+      <div >{now}</div>
       <div className={styles.bg} />
       <img src={Img} alt='' />
-      <Button>hello</Button>
+      <div>{num}</div>
+      <Button onClick={() => setNum(num + 1)}>hello</Button>
     </section>
   )
 }

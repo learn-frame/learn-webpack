@@ -4,16 +4,6 @@ Learn webpack with GeekTime course and other courses.
 
 ## Recipes
 
-- [概念](./docs/concepts.md)
-
-- [浅谈 hash, thunkhash 和 contenthash](./docs/file-fingerprint.md)
-
-- [Cookbooks](./docs/cookbooks.md)
-
-- [HMR 小谈](./docs/hmr.md)
-
-- [构建优化篇](./docs/build-optimization.md)
-
 - [webpack.config.js 经典配置](./config/webpack.config.js)
 
 - [wepack 配置学习](./config/webpack.learning.js)

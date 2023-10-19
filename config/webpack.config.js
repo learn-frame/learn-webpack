@@ -11,6 +11,7 @@ const FileListWebpackPlugin = require('../libs/plugins/file-list-webpack-plugin/
 const ZipWebpackPlugin = require('../libs/plugins/zip-webpack-plugin/zip-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
@@ -32,11 +33,11 @@ const configFactory = (env) => {
   return {
     mode: env,
 
+    target: 'web',
+
     entry: {
       app: './src/index.tsx',
     },
-
-    target: ['web', 'es5'],
 
     output: {
       path: isEnvProduction ? paths.distPath : undefined,
@@ -58,6 +59,8 @@ const configFactory = (env) => {
       alias: {
         '@src': paths.srcPath,
       },
+
+      modules: [paths.srcPath , 'node_modules'],
     },
 
     module: {
@@ -190,45 +193,28 @@ const configFactory = (env) => {
       minimize: isEnvProduction,
 
       minimizer: [
-        () => {
-          return () => {
-            return {
-              terserOptions: {
-                parse: {
-                  ecma: 8,
-                },
-                compress: {
-                  ecma: 5,
-                  warnings: false,
-                  comparisons: false,
-                  inline: 2,
-                },
-                mangle: {
-                  safari10: true,
-                },
-                output: {
-                  ecma: 5,
-                  comments: false,
-                  ascii_only: true,
-                },
-              },
-              sourceMap: true,
-              parallel: true, // 并行压缩
-            }
-          }
-        },
-
-        new CssMinimizerPlugin({
-          parallel: true,
-          minimizerOptions: {
-            preset: [
-              'default',
-              {
-                discardComments: { removeAll: true },
-              },
-            ],
+        new TerserPlugin({
+          terserOptions: {
+            parse: {
+              ecma: 8,
+            },
+            compress: {
+              ecma: 5,
+              warnings: false,
+              comparisons: false,
+              inline: 2,
+            },
+            mangle: {
+              safari10: true,
+            },
+            output: {
+              ecma: 5,
+              comments: false,
+              ascii_only: true,
+            },
           },
         }),
+        new CssMinimizerPlugin(),
       ],
 
       splitChunks: {
@@ -305,8 +291,8 @@ const configFactory = (env) => {
     devServer: isEnvDevelopment
       ? {
           port: 3000,
-          host: 'localhost',
           hot: true,
+          host: 'localhost',
           compress: true,
           publicPath: '/',
           quiet: true,
